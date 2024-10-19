@@ -11,7 +11,7 @@ public class DutchCatcher : MonoBehaviour
 	public float spawnInterval = 2.0f; // cooldown
 	private int duckCount = 0;
 	private float timeLeft = 60f; // time
-	public KeyCode[] keys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W };
+	private KeyCode[] keys = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D };
 	public int requiredDuckCount = 10;
 	private int currentDuckCount = 0;
 	private GameObject currentBubble;
@@ -19,6 +19,9 @@ public class DutchCatcher : MonoBehaviour
 
 	public GameObject caughtADuckCutscene;
 	public GameObject notCaughtADuckCutscene;
+
+	private int previousIndex = 0;
+	private bool isReceivedinput = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -28,7 +31,7 @@ public class DutchCatcher : MonoBehaviour
 
 	void StartGame()
 	{
-		InvokeRepeating(nameof(SpawnBubble), 1f, spawnInterval);
+		InvokeRepeating(nameof(SpawnBubble), 2f, spawnInterval);
 	}
 
     // Update is called once per frame
@@ -42,7 +45,7 @@ public class DutchCatcher : MonoBehaviour
 
 		for (int i = 0; i < keys.Length; i++)
 		{
-			if (Input.GetKeyDown(keys[i]))
+			if (Input.GetKeyDown(keys[i]) && !isReceivedinput)
 			{
 				CheckBubbleAtPosition(i);
 				break;
@@ -57,28 +60,52 @@ public class DutchCatcher : MonoBehaviour
 			Destroy(currentBubble);
 		}
 
-		Debug.Log("Spawn Bubble");
-		int randomIndex = Random.Range(0, spawnPoints.Length);
+		int randomIndex;
+		do
+		{
+			randomIndex = Random.Range(0, spawnPoints.Length);
+		}
+		while(randomIndex == previousIndex);
+
+		previousIndex = randomIndex;
+
 		Transform spawnPoint = spawnPoints[randomIndex];
+
+		Debug.Log(keys[randomIndex]);
+
+		isCurrentBubbleHasDuckSound = Random.value > 0.5f;
+
+		if (isCurrentBubbleHasDuckSound)
+		{
+			StartCoroutine(PlayDuckSound(spawnPoint));
+		}
+
+
 
 		currentBubble = Instantiate(bubblePrefab, spawnPoint.position, Quaternion.identity);
 		currentBubble.transform.SetParent(spawnPoint.transform, true);
 
-		isCurrentBubbleHasDuckSound = true;
+		StartCoroutine(DestroyBubble());
 
-		if(isCurrentBubbleHasDuckSound)
-		{
-			//AudioSource.PlayClipAtPoint(duckSound, spawnPoint.position);
+	}
 
-		}
-		else
-		{
+	IEnumerator DestroyBubble()
+	{
+		yield return new WaitForSeconds(1.5f);
+		Destroy(currentBubble);
+	}
 
-		}
+	IEnumerator PlayDuckSound(Transform spawnPoint)
+	{
+		AudioSource.PlayClipAtPoint(duckSound, spawnPoint.position);
+		yield return new WaitForSeconds(0.1f);
+		AudioSource.PlayClipAtPoint(duckSound, spawnPoint.position);
 	}
 
 	void CheckBubbleAtPosition(int index)
 	{
+		isReceivedinput = true;
+		CancelInvoke(nameof(SpawnBubble));
 		// Kiểm tra nếu có bong bóng tại vị trí tương ứng và đó là bong bóng hiện tại
 		if (currentBubble != null && spawnPoints[index].transform == currentBubble.transform.parent)
 		{
@@ -93,14 +120,11 @@ public class DutchCatcher : MonoBehaviour
 				{
 					EndGame(true); // Kết thúc trò chơi với chiến thắng
 				}
-
-				CancelInvoke(nameof(SpawnBubble));
 			}
 			else
 			{
 				// Người chơi chụp hụt
 				TriggerCutscene(false); // Cắt cảnh hụt
-				CancelInvoke(nameof(SpawnBubble));
 			}
 
 			// Hủy bong bóng sau khi xử lý
@@ -111,7 +135,6 @@ public class DutchCatcher : MonoBehaviour
 		else
 		{
 			TriggerCutscene(false);
-			CancelInvoke(nameof(SpawnBubble));
 			Destroy(currentBubble);
 			currentBubble = null;
 		}
@@ -133,10 +156,13 @@ public class DutchCatcher : MonoBehaviour
 			notCaughtADuckCutscene.SetActive(true);
 		}
 
+
+
 		yield return new WaitForSeconds(0.8f);
 
 		caughtADuckCutscene.SetActive(false);
 		notCaughtADuckCutscene.SetActive(false);
+		isReceivedinput = false;
 
 		StartGame();
 	}

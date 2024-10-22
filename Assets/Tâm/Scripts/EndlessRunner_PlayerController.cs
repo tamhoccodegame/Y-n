@@ -38,7 +38,7 @@ public class EndlessRunner_PlayerController : MonoBehaviour
 
         if(rb.velocity.y <= stopVelocity)
         {
-            rb.velocity = Vector2.up * Physics2D.gravity.y * fallingForce;
-        }
+            rb.velocity += Vector2.up * Physics2D.gravity.y * fallingForce * Time.deltaTime;
+        }   
     }
 }

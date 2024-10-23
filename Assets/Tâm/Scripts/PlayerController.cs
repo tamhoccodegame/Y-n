@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (moveInput == 0 && !IsInActionState())
         {
-            Debug.Log("This case!");
             ChangeState(PlayerState.Idle);
         }
         else if(moveInput != 0 && currentState == PlayerState.Jumping)
@@ -122,16 +121,16 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
-        ChangeState(PlayerState.Attacking);
-        rb.velocity = Vector2.zero;
-        animator.SetTrigger("isAttack");
         isCoroutineRunnning = true;
         StartCoroutine(nameof(AttackDelay));
     }
 
     IEnumerator AttackDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+		ChangeState(PlayerState.Attacking);
+		moveInput = 0;
+		animator.SetTrigger("isAttack");
+		yield return new WaitForSeconds(0.5f);
         ChangeState(PlayerState.Idle);
         isCoroutineRunnning = false;
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimingMNG : MonoBehaviour
 {
@@ -44,24 +45,37 @@ public class TimingMNG : MonoBehaviour
         {
             if (IsInTargetArea())
             {
-                Debug.Log("Đúng! Bạn đã ghi điểm.");
-                // Tăng điểm
+                StartCoroutine(ProcessResult(true));
             }
             else
             {
-                Debug.Log("Sai! Cố gắng lần sau.");
-            }
-        }
+				StartCoroutine(ProcessResult(false));
+			}
+		}
+    }
+
+    IEnumerator ProcessResult(bool isCorrect)
+    {
+        if (isCorrect)
+        {
+			line.GetComponent<Image>().color = Color.green;
+		}
+        else
+        {
+			line.GetComponent<Image>().color = Color.red;
+		}
+        yield return new WaitForSeconds(.1f);
+        line.GetComponent <Image>().color = Color.black;
     }
 
     bool IsInTargetArea()
     {
+        RectTransform checkLine = Instantiate(line.gameObject, line.transform.position, Quaternion.identity, safeRange).GetComponent<RectTransform>();
+        bool result = checkLine.anchoredPosition.x >= 0 && checkLine.anchoredPosition.x <= safeRange.rect.width;
 
-        RectTransform checkLine = Instantiate(line.gameObject, line.transform.position, Quaternion.identity).GetComponent<RectTransform>();
-        checkLine.SetParent(safeRange.transform);
-        checkLine.anchoredPosition = Vector2.zero;
+        Destroy(checkLine.gameObject);
 
-        return false;
+		return result;
 
     }
 }

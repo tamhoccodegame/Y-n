@@ -15,6 +15,7 @@ public class AI : MonoBehaviour
 	private Rigidbody2D rb;
 	private bool isGrounded = false;
 	private bool isChasing = false;
+	private bool isBeingCharmed = false;
 
 	void Start()
 	{
@@ -23,22 +24,26 @@ public class AI : MonoBehaviour
 
 	void Update()
 	{
+
+		if(isBeingCharmed) return;
+
 		float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-		// Check if player is in range
-		if (distanceToPlayer < detectionRange)
-		{
-			isChasing = true;
-		}
-		else
-		{
-			isChasing = false;
-		}
+		rb.velocity = new Vector2(0, rb.velocity.y);
+		//// Check if player is in range
+		//if (distanceToPlayer < detectionRange)
+		//{
+		//	isChasing = true;
+		//}
+		//else
+		//{
+		//	isChasing = false;
+		//}
 
-		if (isChasing)
-		{
-			ChasePlayer();
-		}
+		//if (isChasing)
+		//{
+		//	ChasePlayer();
+		//}
 	}
 
 	void ChasePlayer()
@@ -85,15 +90,20 @@ public class AI : MonoBehaviour
 		rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 	}
 
-	//private void OnDrawGizmos()
-	//{
-	//	// Visualize detection range
-	//	Gizmos.color = Color.red;
-	//	Gizmos.DrawWireSphere(transform.position, detectionRange);
+	public IEnumerator Charmed(Transform charmSource, float duration)
+	{
+		//thay doi co de dung toan bo hoat dong
+		//anim di chuyen bi me hoac
+		isBeingCharmed = true;
+		float charmTimer = 0;
+		while(charmTimer <= duration)
+		{
+			Vector2 direction = (charmSource.position - transform.position).normalized;
+			rb.velocity = new Vector2(moveSpeed * direction.x, rb.velocity.y);
+			charmTimer += Time.deltaTime;
+			yield return null;
+		}
 
-	//	// Visualize ground and obstacle checks
-	//	Gizmos.color = Color.green;
-	//	Gizmos.DrawLine(transform.position, transform.position + Vector3.down * groundCheckDistance);  // Ground check
-	//	Gizmos.DrawLine(transform.position, transform.position + Vector3.right * Mathf.Sign(rb.velocity.x) * obstacleCheckDistance);  // Obstacle check	
-	//}
+		isBeingCharmed = false;
+	}
 }

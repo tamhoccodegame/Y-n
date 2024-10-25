@@ -288,9 +288,8 @@ MonoBehaviour:
   - {fileID: 661544609}
   - {fileID: 2125387742}
   - {fileID: 1956762800}
-  duckSound: {fileID: 0}
+  duckSound: {fileID: 8300000, guid: 2c7b314cd7783c14e833131bd9b81d90, type: 3}
   spawnInterval: 2
-  keys: 61000000730000006400000077000000
   requiredDuckCount: 10
   caughtADuckCutscene: {fileID: 247719160}
   notCaughtADuckCutscene: {fileID: 1515611978}

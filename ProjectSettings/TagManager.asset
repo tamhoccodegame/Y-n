@@ -11,8 +11,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Sky
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 2459176899
+    locked: 0
+  - name: Sky
+    uniqueID: 874878265
+    locked: 0
+  - name: Player
+    uniqueID: 3100631113
     locked: 0
   - name: UI
     uniqueID: 2653985181

@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Player
   - Sky
-  - 
-  - 
+  - MiddleGround
+  - ForeGround
   - 
   - 
   - 
@@ -41,14 +41,28 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+<<<<<<< Updated upstream
+  - name: Foreground
+    uniqueID: 1044294991
+=======
+  - name: Background
+    uniqueID: 1502349037
+>>>>>>> Stashed changes
+    locked: 0
   - name: Ground
     uniqueID: 2459176899
     locked: 0
   - name: Sky
     uniqueID: 874878265
     locked: 0
+  - name: Items
+    uniqueID: 426942995
+    locked: 0
   - name: Player
     uniqueID: 3100631113
+    locked: 0
+  - name: Foreground
+    uniqueID: 897127361
     locked: 0
   - name: UI
     uniqueID: 2653985181

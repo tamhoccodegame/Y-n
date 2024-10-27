@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Player
   - Sky
-  - 
-  - 
+  - MiddleGround
+  - BackGround
   - 
   - 
   - 
@@ -38,23 +38,26 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
-  - name: Foreground
-    uniqueID: 1044294991
-    locked: 0
-  - name: Ground
-    uniqueID: 2459176899
+  - name: Background
+    uniqueID: 3812020129
     locked: 0
   - name: Sky
     uniqueID: 874878265
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 2459176899
     locked: 0
   - name: Items
     uniqueID: 426942995
     locked: 0
   - name: Player
     uniqueID: 3100631113
+    locked: 0
+  - name: Foreground
+    uniqueID: 1044294991
     locked: 0
   - name: UI
     uniqueID: 2653985181

@@ -26,7 +26,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+		QualitySettings.vSyncCount = 1; // Kích hoạt VSync
+		Application.targetFrameRate = 60; // Cố định tần số khung hình là 60 FPS
+
+		rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
     }
@@ -79,9 +82,9 @@ public class PlayerController : MonoBehaviour
 
     void UpdateAnimation()
     {
-        if (currentState != PlayerState.Attacking)
-            animator.SetFloat("speed", Mathf.Abs(moveInput));
-        else animator.SetFloat("speed", 0);
+        //if (currentState != PlayerState.Attacking)
+        //    animator.SetFloat("speed", Mathf.Abs(moveInput));
+        //else animator.SetFloat("speed", 0);
     }
 
     public void ChangeState(PlayerState newState)
@@ -94,8 +97,11 @@ public class PlayerController : MonoBehaviour
 		rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
         ChangeState(PlayerState.Moving);
 
-        if(moveInput > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (moveInput < 0) transform.localScale = new Vector3(-1, 1, 1);
+        Vector3 currentScale = transform.localScale;
+        if (moveInput > 0) currentScale.x = Mathf.Abs(currentScale.x);
+        else currentScale.x = -Mathf.Abs(currentScale.x);
+
+        transform.localScale = currentScale;
     }
 
     void MoveInAir(float moveInput)
@@ -129,7 +135,7 @@ public class PlayerController : MonoBehaviour
     {
 		ChangeState(PlayerState.Attacking);
 		moveInput = 0;
-		animator.SetTrigger("isAttack");
+		//animator.SetTrigger("isAttack");
 		yield return new WaitForSeconds(0.5f);
         ChangeState(PlayerState.Idle);
         isCoroutineRunnning = false;

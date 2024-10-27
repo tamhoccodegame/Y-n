@@ -35,7 +35,6 @@ public class BackgroundScaler : MonoBehaviour
 		float spriteWidth = spriteRenderer.sprite.bounds.size.x;
 		float spriteHeight = spriteRenderer.sprite.bounds.size.y;
 
-		Debug.Log($"Height: {spriteHeight} Width: {spriteWidth}");
 		// Tính tỷ lệ cần điều chỉnh
 		float scaleX = width / spriteWidth;
 		float scaleY = height / spriteHeight;

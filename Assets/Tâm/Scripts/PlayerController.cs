@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public Collider2D feetBoxCast;
 
-    public bool canJump = false;
+    public bool isGrounded = false;
     bool isCoroutineRunnning = false;
 
     public enum PlayerState {Idle, Moving, Jumping, Attacking};
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if(canJump)
+        if(isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             ChangeState(PlayerState.Jumping);

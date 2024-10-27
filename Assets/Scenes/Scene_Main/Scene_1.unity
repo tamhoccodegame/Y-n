@@ -3568,6 +3568,7 @@ GameObject:
   - component: {fileID: 846884058}
   - component: {fileID: 846884059}
   - component: {fileID: 846884060}
+  - component: {fileID: 846884061}
   m_Layer: 6
   m_Name: "Y\xCAN TH\u1EEC"
   m_TagString: Untagged
@@ -3740,7 +3741,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846884053}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1e0a09579c045f4eb423d6c8f4b6f2f, type: 3}
   m_Name: 
@@ -3750,8 +3751,28 @@ MonoBehaviour:
   stopJumpVel: 2
   fallingForce: 3
   feetBoxCast: {fileID: 1398873326}
-  canJump: 0
+  isGrounded: 0
   currentState: 0
+--- !u!114 &846884061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846884053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8627442c9bcf53b4786a1eeae612b523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  jumpForce: 5
+  stopJumpVel: 3
+  fallingForce: 2
+  jumpTimeCounter: 0
+  maxTimeJump: 0.5
+  feetBoxCast: {fileID: 1398873326}
+  isGrounded: 0
 --- !u!1 &881677157
 GameObject:
   m_ObjectHideFlags: 0
@@ -5441,7 +5462,7 @@ GameObject:
   - component: {fileID: 1398873324}
   - component: {fileID: 1398873326}
   - component: {fileID: 1398873325}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5527,7 +5548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d4daca85ab0c14fa0123a53ce27f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 846884060}
+  player: {fileID: 846884061}
   animator: {fileID: 0}
 --- !u!61 &1398873326
 BoxCollider2D:

@@ -12,6 +12,9 @@ public class GroundSwitcher : MonoBehaviour
     public Vector3 playerMiddleGroundScale;
     public Vector3 playerBackGroundScale;
 
+	public PolygonCollider2D middleGroundLimitCam;
+	public PolygonCollider2D backGroundLimitCam;
+
     public SpriteRenderer playerOrderLayer;
 	public CinemachineVirtualCamera virtualCamera;
 
@@ -48,6 +51,10 @@ public class GroundSwitcher : MonoBehaviour
 		Vector3 endScale = isScaleUp ? playerMiddleGroundScale : playerBackGroundScale;
 		float startOrthographic = virtualCamera.m_Lens.OrthographicSize;
 		float endOrthographic = isScaleUp ? middleGroundOrthographic : backGroundOrthographic;
+
+		CinemachineConfiner confiner = virtualCamera.GetComponent<CinemachineConfiner>();
+		confiner.m_BoundingShape2D = isScaleUp ? middleGroundLimitCam : backGroundLimitCam;
+
 		float timer = 1f;
 
 		endScale.x *= Mathf.Sign(transform.localScale.x); //Lấy dấu hướng X
@@ -86,7 +93,7 @@ public class GroundSwitcher : MonoBehaviour
 		}
 		else
 		{
-			playerOrderLayer.sortingOrder = -3;
+			playerOrderLayer.sortingOrder = -5;
 			int middlegroundLayer = LayerMask.NameToLayer("MiddleGround");
 			cam.cullingMask = ~(1 << middlegroundLayer);
 		}

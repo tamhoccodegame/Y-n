@@ -16,7 +16,11 @@ public class GroundSwitcher : MonoBehaviour
 	public PolygonCollider2D backGroundLimitCam;
 
     public SpriteRenderer playerOrderLayer;
+	public string playerMiddleGroundLayer;
+	public string playerBackGroundLayer;
 	public CinemachineVirtualCamera virtualCamera;
+
+	public GameObject backGround;
 
 	public readonly float middleGroundOrthographic = 7.5f;
 	public readonly float backGroundOrthographic = 6;
@@ -59,6 +63,18 @@ public class GroundSwitcher : MonoBehaviour
 
 		endScale.x *= Mathf.Sign(transform.localScale.x); //Lấy dấu hướng X
 
+		if (isScaleUp)
+		{
+			playerOrderLayer.sortingLayerName = playerMiddleGroundLayer;
+		}
+
+		foreach(Transform child in backGround.transform)
+		{
+			Collider2D col = child.GetComponent<Collider2D>();
+			if(col) col.enabled = isScaleUp ? false : true
+					;
+		}
+
 		while (elapsedTime < timer)
 		{
 			// Tăng thời gian đã trôi qua
@@ -86,16 +102,12 @@ public class GroundSwitcher : MonoBehaviour
 		transform.localScale = endScale;
 		virtualCamera.m_Lens.OrthographicSize = endOrthographic;
 
-
-		if (isScaleUp)
+		if(!isScaleUp)
 		{
-			playerOrderLayer.sortingOrder = 0;
-		}
-		else
-		{
-			playerOrderLayer.sortingOrder = -5;
+			playerOrderLayer.sortingLayerName = playerBackGroundLayer;
 			int middlegroundLayer = LayerMask.NameToLayer("MiddleGround");
 			cam.cullingMask = ~(1 << middlegroundLayer);
 		}
+
 	}
 }

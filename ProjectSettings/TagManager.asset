@@ -62,3 +62,21 @@ TagManager:
   - name: UI
     uniqueID: 2653985181
     locked: 0
+  - name: BackGround_Back
+    uniqueID: 2236776841
+    locked: 0
+  - name: Player_BackGround
+    uniqueID: 2052779245
+    locked: 0
+  - name: Background_Front
+    uniqueID: 3338281545
+    locked: 0
+  - name: MiddleGround_Back
+    uniqueID: 3308140605
+    locked: 0
+  - name: Player_MiddleGround
+    uniqueID: 3859323927
+    locked: 0
+  - name: MiddleGround_Front
+    uniqueID: 2448491241
+    locked: 0

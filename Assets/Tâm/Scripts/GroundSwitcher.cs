@@ -70,9 +70,14 @@ public class GroundSwitcher : MonoBehaviour
 
 		foreach(Transform child in backGround.transform)
 		{
-			Collider2D col = child.GetComponent<Collider2D>();
-			if(col) col.enabled = isScaleUp ? false : true
-					;
+			Collider2D[] col = child.GetComponents<Collider2D>();
+			if(col.Length > 0)
+			{
+				foreach(Collider2D c in col)
+				{
+					c.enabled = isScaleUp ? false : true;
+				}
+			}
 		}
 
 		while (elapsedTime < timer)

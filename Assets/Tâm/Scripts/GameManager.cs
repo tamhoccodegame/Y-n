@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     private UIManager uiManager;
     private DialogueDatabase dialogueDatabase;
     // Start is called before the first frame update

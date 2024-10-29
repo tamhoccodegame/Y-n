@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TriggerDialogue : MonoBehaviour
 {
-    public string[] lines;
-    public Dialogue dialogueBox;
+    public int dialogueIndex;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +21,7 @@ public class TriggerDialogue : MonoBehaviour
 	{
 		if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            dialogueBox.lines = lines;
-            dialogueBox.gameObject.SetActive(true);
+            GameManager.instance.StartDialogue(dialogueIndex);
         }
 	}
 }

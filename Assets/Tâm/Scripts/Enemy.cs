@@ -84,6 +84,7 @@ public class Enemy : MonoBehaviour
         {
             RandomPatrolIndex();
         }
+
     }
 
     void Chase()

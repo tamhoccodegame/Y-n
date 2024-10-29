@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,15 +29,20 @@ public class GameManager : MonoBehaviour
 
 	public void StartDialogue(int dialougeIndex)
     {   
-        List<DialogueLine> dialogues = dialogueDatabase.GetDialogue(dialougeIndex); 
-        if (dialogues != null)
+        Dialogue dialogue = dialogueDatabase.GetDialogue(dialougeIndex);
+        if (dialogue != null)
         {
-           uiManager.StartDialogue(dialogues);
+           uiManager.StartDialogue(dialogue);
         }
         else
         {
             Debug.LogError("DialogueDatabase is not assigned");
         }
+    }
+
+    public void LoadScence(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
 }

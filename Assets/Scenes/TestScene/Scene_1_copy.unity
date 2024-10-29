@@ -6332,7 +6332,6 @@ GameObject:
   m_Component:
   - component: {fileID: 775739944}
   - component: {fileID: 775739945}
-  - component: {fileID: 775739946}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -6407,27 +6406,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &775739946
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 775739943}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d2cc59d3e51d70a479afbc898af411c3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &783217867
 GameObject:
   m_ObjectHideFlags: 0
@@ -10994,8 +10972,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1173430298}
   chaseRange: 8
-  attackRange: 3
-  moveSpeed: 5
+  attackRange: 5
+  moveSpeed: 15
   patrolPoints:
   - {fileID: 1555762355}
   - {fileID: 1606393848}

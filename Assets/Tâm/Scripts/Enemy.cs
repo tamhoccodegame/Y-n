@@ -40,10 +40,13 @@ public class Enemy : MonoBehaviour
 		switch (currentState)
         {
             case State.Patrol:
+                Patrol();
                 break;
             case State.Chase:
+                Chase();
                 break;
             case State.Attack:
+                Attack();
                 break;
             case State.Skill:
                 break; ;

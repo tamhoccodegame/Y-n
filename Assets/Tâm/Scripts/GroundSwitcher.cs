@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GroundSwitcher : MonoBehaviour
 {
+	Transform player;
     public float backGroundY;
     public float middleGroundY;
 
@@ -25,6 +26,11 @@ public class GroundSwitcher : MonoBehaviour
 	public readonly float middleGroundOrthographic = 7.5f;
 	public readonly float backGroundOrthographic = 6;
 
+	bool isPlayerInZone = false;
+	bool isPlayerInBackground = false;
+
+	Coroutine move = null;
+
 	Camera cam;
     // Start is called before the first frame update
     void Start()
@@ -35,23 +41,42 @@ public class GroundSwitcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-			StartCoroutine(MoveYOverTime(backGroundY, false));
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-			playerOrderLayer.sortingOrder = 0;
-			StartCoroutine(MoveYOverTime(middleGroundY, true));
-		}
+		if (!isPlayerInZone) return;
 
+		if (Input.GetKeyDown(KeyCode.W) && !isPlayerInBackground)
+		{
+			if (move != null) StopCoroutine(move);
+			move = StartCoroutine(MoveYOverTime(backGroundY, false));
+			isPlayerInBackground = true;
+		}
+		else if (Input.GetKeyDown(KeyCode.S) && isPlayerInBackground)
+		{
+			if (move != null) StopCoroutine(move);
+			isPlayerInBackground = false;
+			playerOrderLayer.sortingOrder = 0;
+			move = StartCoroutine(MoveYOverTime(middleGroundY, true));
+		}
 	}
 
-	private IEnumerator MoveYOverTime(float tagertY, bool isScaleUp)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		float startY = transform.position.y; // Lấy vị trí Y ban đầu
+		if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+		{
+			isPlayerInZone = true;
+			player = collision.transform;
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		isPlayerInZone = false;
+	}
+
+	public IEnumerator MoveYOverTime(float tagertY, bool isScaleUp)
+	{
+		float startY = player.transform.position.y; // Lấy vị trí Y ban đầu
 		float elapsedTime = 0f; // Thời gian đã trôi qua
-		Vector3 startScale = transform.localScale;
+		Vector3 startScale = player.transform.localScale;
 		Vector3 endScale = isScaleUp ? playerMiddleGroundScale : playerBackGroundScale;
 		float startOrthographic = virtualCamera.m_Lens.OrthographicSize;
 		float endOrthographic = isScaleUp ? middleGroundOrthographic : backGroundOrthographic;
@@ -61,7 +86,7 @@ public class GroundSwitcher : MonoBehaviour
 
 		float timer = 1f;
 
-		endScale.x *= Mathf.Sign(transform.localScale.x); //Lấy dấu hướng X
+		endScale.x *= Mathf.Sign(player.transform.localScale.x); //Lấy dấu hướng X
 
 		if (isScaleUp)
 		{
@@ -94,8 +119,8 @@ public class GroundSwitcher : MonoBehaviour
 			float newOrthographic = Mathf.Lerp(startOrthographic, endOrthographic, elapsedTime / timer);
 
 			// Cập nhật vị trí của đối tượng
-			transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-			transform.localScale = newScale;
+			player.transform.position = new Vector3(player.transform.position.x, newY, player.transform.position.z);
+			player.transform.localScale = newScale;
 			virtualCamera.m_Lens.OrthographicSize = newOrthographic;
 
 			// Chờ một frame trước khi tiếp tục
@@ -103,8 +128,8 @@ public class GroundSwitcher : MonoBehaviour
 		}
 
 		// Đảm bảo đối tượng đạt đến vị trí Y mục tiêu
-		transform.position = new Vector3(transform.position.x, tagertY, transform.position.z);
-		transform.localScale = endScale;
+		player.transform.position = new Vector3(player.transform.position.x, tagertY, player.transform.position.z);
+		player.transform.localScale = endScale;
 		virtualCamera.m_Lens.OrthographicSize = endOrthographic;
 
 		if(!isScaleUp)

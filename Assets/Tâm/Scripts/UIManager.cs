@@ -112,6 +112,8 @@ public class UIManager : MonoBehaviour
 	void EndDialogue()
 	{
 		dialoguePanel.SetActive(false);
+		buttonContainer.SetActive(false);
+		speaker.text = string.Empty;
 		sentence.text = string.Empty;
 	}
 }

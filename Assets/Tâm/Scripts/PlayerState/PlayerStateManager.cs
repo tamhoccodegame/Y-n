@@ -45,7 +45,7 @@ public class PlayerStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		MoveInput = Input.GetAxisRaw("Horizontal");
+		MoveInput = Input.GetAxis("Horizontal");
 		PlayerState.UpdateState(this);
     }
 

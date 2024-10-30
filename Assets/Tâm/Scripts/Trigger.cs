@@ -18,6 +18,7 @@ public class Trigger : MonoBehaviour
 				}
 			}
 			else Debug.LogError("Triggerable components is not assigned");
+			Destroy(gameObject);
 		}
 	}
 }

@@ -7,6 +7,7 @@ public class JumpingState : IPlayerState
 		player.isGrounded = false;
 		player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
 		player.jumpTimeCounter = player.maxJumpTime;
+		GameManager.instance.PlayAudio("Jump");
 	}
 
 	public void UpdateState(PlayerStateManager player)
@@ -38,5 +39,6 @@ public class JumpingState : IPlayerState
 	{
 		// Không cần xử lý gì thêm khi rời khỏi trạng thái nhảy
 		player.isGrounded = true;
+		GameManager.instance.PlayAudio("Land");
 	}
 }

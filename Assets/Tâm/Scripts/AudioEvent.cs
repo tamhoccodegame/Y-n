@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueEvent : MonoBehaviour, ITriggerable
+public class AudioEvent : MonoBehaviour, ITriggerable
 {
-    public string dialogueName;
+    public string audioName;
 	public void TriggerAction()
 	{
-        GameManager.instance.StartDialogue(dialogueName);
+		GameManager.instance.PlayAudio(audioName);
 	}
 
 	// Start is called before the first frame update

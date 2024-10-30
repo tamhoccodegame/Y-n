@@ -116,4 +116,14 @@ public class UIManager : MonoBehaviour
 		speaker.text = string.Empty;
 		sentence.text = string.Empty;
 	}
+
+	public void ShowMenu()
+	{
+		transform.Find("Menu").gameObject.SetActive(true);
+	}
+
+	public void HideMenu()
+	{
+		transform.Find("Menu").gameObject.SetActive(false);
+	}
 }

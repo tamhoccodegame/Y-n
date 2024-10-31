@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue)
     {
+		GameManager.instance.SetIsControllable(false);
 		speaker.text = string.Empty;
 		sentence.text = string.Empty;
 		dialoguePanel.SetActive(true);
@@ -115,6 +116,7 @@ public class UIManager : MonoBehaviour
 		buttonContainer.SetActive(false);
 		speaker.text = string.Empty;
 		sentence.text = string.Empty;
+		GameManager.instance.SetIsControllable(true);
 	}
 
 	public void ShowMenu()

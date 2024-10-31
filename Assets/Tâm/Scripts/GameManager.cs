@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private AudioManager audioManager;
     private DialogueDatabase dialogueDatabase;
+
+    private bool isControllable = true;
     // Start is called before the first frame update
     void Awake()
     {
@@ -28,6 +30,16 @@ public class GameManager : MonoBehaviour
         dialogueDatabase = GetComponentInChildren<DialogueDatabase>();
         audioManager = GetComponentInChildren<AudioManager>();
 	}
+
+    public bool IsControllable()
+    {
+        return isControllable;
+    }
+
+    public void SetIsControllable(bool _isControllable)
+    {
+        isControllable = _isControllable;
+    }
 
 	public void StartDialogue(string dialgueName)
     {   

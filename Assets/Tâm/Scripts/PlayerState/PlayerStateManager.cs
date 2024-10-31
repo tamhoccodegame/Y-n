@@ -45,6 +45,7 @@ public class PlayerStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
+		if (!GameManager.instance.IsControllable()) return;
 		MoveInput = Input.GetAxis("Horizontal");
 		PlayerState.UpdateState(this);
     }

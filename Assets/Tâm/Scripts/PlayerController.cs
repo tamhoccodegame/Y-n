@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.instance.IsControllable()) return;
+
         HandleInput();
         UpdateAnimation();
 

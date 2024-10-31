@@ -6,7 +6,7 @@ public class WalkingState : IPlayerState
 {
 	public void EnterState(PlayerStateManager player)
 	{
-
+		player.animator.Play("Walk");
 	}
 
 	public void UpdateState(PlayerStateManager player)

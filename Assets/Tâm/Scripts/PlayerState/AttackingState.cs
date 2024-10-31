@@ -6,12 +6,17 @@ public class AttackingState : IPlayerState
 {
 	void IPlayerState.EnterState(PlayerStateManager player)
 	{
-		throw new System.NotImplementedException();
+		player.animator.Play("Attack");
+	}
+
+	void IPlayerState.UpdateState(PlayerStateManager player)
+	{
+		if (player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) player.SwitchState(player.idleState);
 	}
 
 	void IPlayerState.ExitState(PlayerStateManager player)
 	{
-		throw new System.NotImplementedException();
+
 	}
 
 	// Start is called before the first frame update
@@ -26,8 +31,4 @@ public class AttackingState : IPlayerState
         
     }
 
-	void IPlayerState.UpdateState(PlayerStateManager player)
-	{
-		throw new System.NotImplementedException();
-	}
 }

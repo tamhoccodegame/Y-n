@@ -62,6 +62,11 @@ public class PlayerStateManager : MonoBehaviour
 		transform.localScale = currentLocalScale;
 	}
 
+	public void PlayFootStep()
+	{
+		int randomValue = Random.Range(1, 5);
+		GameManager.instance.PlayAudio($"Footstep{randomValue}");
+	}
 
 	public void SwitchState(IPlayerState newState)
     {

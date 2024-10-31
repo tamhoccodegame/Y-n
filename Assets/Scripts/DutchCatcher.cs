@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -11,14 +12,19 @@ public class DutchCatcher : MonoBehaviour
 	public float spawnInterval = 2.0f; // cooldown
 	private int duckCount = 0;
 	private float timeLeft = 60f; // time
-	private KeyCode[] keys = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D };
+	private KeyCode[] keys = { KeyCode.Q, KeyCode.E, KeyCode.A, KeyCode.D };
 	public int requiredDuckCount = 10;
 	private int currentDuckCount = 0;
+	private int legalErrorsCount = 2;
 	private GameObject currentBubble;
 	private bool isCurrentBubbleHasDuckSound = false;
 
 	public GameObject caughtADuckCutscene;
 	public GameObject notCaughtADuckCutscene;
+
+	public TextMeshProUGUI time;
+	public TextMeshProUGUI duckCaught;
+	public TextMeshProUGUI legalError;
 
 	private int previousIndex = 0;
 	private bool isReceivedinput = false;
@@ -37,11 +43,17 @@ public class DutchCatcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeLeft -= Time.deltaTime;
+		time.text = timeLeft.ToString();
+		duckCaught.text = currentDuckCount.ToString();
+		legalError.text = legalErrorsCount.ToString();
+
+		timeLeft -= Time.deltaTime;
 		if (timeLeft < 0)
 		{
 			EndGame(false);
 		}
+
+		if (legalErrorsCount == 0) EndGame(false);
 
 		for (int i = 0; i < keys.Length; i++)
 		{
@@ -125,6 +137,7 @@ public class DutchCatcher : MonoBehaviour
 			{
 				// Người chơi chụp hụt
 				TriggerCutscene(false); // Cắt cảnh hụt
+				legalErrorsCount--;
 			}
 
 			// Hủy bong bóng sau khi xử lý
@@ -134,6 +147,7 @@ public class DutchCatcher : MonoBehaviour
 		//Bấm lộn nút
 		else
 		{
+			legalErrorsCount--;
 			TriggerCutscene(false);
 			Destroy(currentBubble);
 			currentBubble = null;
@@ -169,13 +183,16 @@ public class DutchCatcher : MonoBehaviour
 
 	void EndGame(bool isWin)
 	{
+		StopAllCoroutines();
 		if(!isWin)
 		{
-
+			Debug.Log("Mày ngu! Mày ngu! Mày ngu");
+			GameManager.instance.LoadPreviousScene();
 		}
 		else
 		{
-
+			Debug.Log("Idol!!");
+			GameManager.instance.LoadPreviousScene();
 		}
 	}
 }

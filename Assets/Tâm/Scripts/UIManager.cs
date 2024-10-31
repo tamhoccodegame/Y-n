@@ -122,14 +122,10 @@ public class UIManager : MonoBehaviour
 		GameManager.instance.SetIsControllable(true);
 	}
 
-	public void ShowMenu()
+	public void UpdateUIMenu()
 	{
-		transform.Find("Menu").gameObject.SetActive(true);
-	}
-
-	public void HideMenu()
-	{
-		transform.Find("Menu").gameObject.SetActive(false);
+		GameObject menu = transform.Find("Menu").gameObject;
+		if(menu != null) menu.SetActive(!menu.activeSelf);
 	}
 
 	public void UpdateVisual()

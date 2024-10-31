@@ -62,8 +62,8 @@ public class DialogueDatabase : MonoBehaviour
                 noText = "Hì…Dạ thui cô",
                 onYes = () =>
                 {
-                    //GameManager.instance.LoadScene("MNG_Phachenuoc");
-                    Debug.Log("Yes yes yes!");
+					GameManager.instance.LoadScene("MNG_Phachenuoc");
+					Debug.Log("Yes yes yes!");
                 },
 				onNo = () =>
 				{
@@ -149,8 +149,8 @@ public class DialogueDatabase : MonoBehaviour
 				noText = "Thôi, mệt quá rồi",
 				onYes = () =>
 				{
-                    //GameManager.instance.LoadScene("MNG_Phachenuoc");
-                    Debug.Log("Yes yes yes!");
+					GameManager.instance.LoadScene("MNG_BitMatBatVit");
+					Debug.Log("Yes yes yes!");
 				},
 				onNo = () =>
 				{

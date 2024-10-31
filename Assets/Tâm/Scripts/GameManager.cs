@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private List<Costume> unlockedCostumeList = new List<Costume>();    
 
 	private bool isControllable = true;
+    private string previousScene = null;
     // Start is called before the first frame update
     void Awake()
     {
@@ -111,18 +112,20 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyUp(KeyCode.KeypadPlus))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            //bool yenOrKhi = Random.value > 0.5f;
-            //if (yenOrKhi) UnlockCostume("Yen");
-            //else UnlockCostume("Khi");
-
-            UnlockedDiary(0);
+            uiManager.UpdateUIMenu();
         }
 	}
 
-	public void LoadScence(string sceneName)
+	public void LoadScene(string sceneName)
 	{
+        previousScene = SceneManager.GetActiveScene().name;
 		SceneManager.LoadScene(sceneName);
 	}
+
+    public void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(previousScene);
+    }
 }

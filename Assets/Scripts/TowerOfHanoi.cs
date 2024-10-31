@@ -105,7 +105,6 @@ public class TowerOfHanoi : MonoBehaviour
 		//if (isMoving) return; // Nếu đang di chuyển đĩa thì không làm gì thêm
 		if (towers[fromPeg].Count > 0)
 		{
-			Debug.Log($"Thap nay se con lai {towers[fromPeg].Count - 1} Sau khi lay ra");
 			movingDisk = towers[fromPeg].Pop();
 
 			float movingDiskWidth = movingDisk.GetComponent<RectTransform>().rect.width;

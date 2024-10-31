@@ -15,7 +15,7 @@ public class ComicCutscene : MonoBehaviour
 
 	private void Cutscene_stopped(PlayableDirector obj)
 	{
-		GameManager.instance.LoadScence(sceneToLoad);
+		GameManager.instance.LoadScene(sceneToLoad);
 	}
 
 }

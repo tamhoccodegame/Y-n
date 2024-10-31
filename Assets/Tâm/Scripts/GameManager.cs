@@ -11,8 +11,13 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private AudioManager audioManager;
     private DialogueDatabase dialogueDatabase;
+    private DiaryDatabase diaryDatabase;
+    private CostumeDatabase costumeDatabase;
 
-    private bool isControllable = true;
+	private List<Diary> unlockedDiaryList = new List<Diary>();
+    private List<Costume> unlockedCostumeList = new List<Costume>();    
+
+	private bool isControllable = true;
     // Start is called before the first frame update
     void Awake()
     {
@@ -28,6 +33,8 @@ public class GameManager : MonoBehaviour
 	{
         uiManager = GetComponentInChildren<UIManager>();
         dialogueDatabase = GetComponentInChildren<DialogueDatabase>();
+        diaryDatabase = GetComponentInChildren<DiaryDatabase>();
+        costumeDatabase = GetComponentInChildren<CostumeDatabase>();
         audioManager = GetComponentInChildren<AudioManager>();
 	}
 
@@ -54,10 +61,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadScence(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
 
     public void PlayAudio(string soundName)
     {
@@ -69,4 +72,57 @@ public class GameManager : MonoBehaviour
         audioManager.StopAllAudio();
     }
 
+    public List<Diary> GetUnlockedDiary()
+    {
+        return unlockedDiaryList;
+    }
+    public void UnlockedDiary(int diaryIndex)
+    {
+        Diary diary = diaryDatabase.GetDiary(diaryIndex);
+        if(diary != null)
+        {
+			unlockedDiaryList.Add(diary);
+			uiManager.UpdateVisual();
+		}
+        else
+        {
+            Debug.LogError("Couldn't find diary");
+        }
+    }
+
+    public void UnlockCostume(string costumeName)
+    {
+        Costume costume = costumeDatabase.GetCostume(costumeName);
+        if (costume != null)
+        {
+            unlockedCostumeList.Add(costume);
+            uiManager.UpdateVisual();
+        }
+        else
+        {
+            Debug.LogError("Couldn't find costume");
+        }
+    }
+    
+    public List<Costume> GetCostumeList()
+    {
+        return unlockedCostumeList;
+    }
+
+	private void Update()
+	{
+		if(Input.GetKeyUp(KeyCode.KeypadPlus))
+        {
+            //bool yenOrKhi = Random.value > 0.5f;
+            //if (yenOrKhi) UnlockCostume("Yen");
+            //else UnlockCostume("Khi");
+
+            UnlockedDiary(0);
+        }
+	}
+
+	public void LoadScence(string sceneName)
+	{
+		SceneManager.LoadScene(sceneName);
+	}
 }

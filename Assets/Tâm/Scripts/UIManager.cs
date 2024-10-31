@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
 
 	Coroutine dialogueCoroutine;
 
+
+	public UIDiaryTab uiDiary;
+	public UICostumeTab uiCostume;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -127,5 +130,11 @@ public class UIManager : MonoBehaviour
 	public void HideMenu()
 	{
 		transform.Find("Menu").gameObject.SetActive(false);
+	}
+
+	public void UpdateVisual()
+	{
+		uiDiary.UpdateVisual();
+		uiCostume.UpdateVisual();
 	}
 }

@@ -1,0 +1,12 @@
+Font: Arima  Style: Thin
+Point Size: 80   SP/PD Ratio: 6.3%
+
+Characters included: 93/93
+Missing characters: 0
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+
+Characters excluded from packing:
+----------------------------------------

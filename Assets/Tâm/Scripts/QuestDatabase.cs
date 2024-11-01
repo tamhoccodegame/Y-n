@@ -10,11 +10,12 @@ public class Quest
     public string description;
     public bool isCompleted;
     public bool isActive;
+	public string prerequisiteQuest;
 
 	public List<GameObject> requiredComponentsKeys;
 
 	public Action<List<GameObject>> onActive;
-    public Action<List<GameObject>> onCompleted;
+    public Action onCompleted;
 
     public void CompleteQuest()
     {
@@ -24,11 +25,13 @@ public class Quest
 
 public class QuestDatabase : MonoBehaviour
 {
+    public static List<GameObject> tempGameObject = new List<GameObject>();
     private List<Quest> quests = new List<Quest>()
     {
         new Quest
         {
-            name = "Quai_Scene_1",
+            name = "1_1",
+            prerequisiteQuest = "",
             description = "Đánh bại kẻ địch",
             isCompleted = false,
             isActive = false,
@@ -36,20 +39,39 @@ public class QuestDatabase : MonoBehaviour
             requiredComponentsKeys = new List<GameObject>(),
             onActive = (List<GameObject> g) =>
             {
-                GameObject camGo = g.Find(g => g.GetComponent<CinemachineVirtualCamera>() != null);
-                CinemachineVirtualCamera cam = camGo.GetComponent<CinemachineVirtualCamera>();
-                List<GameObject> walls = g.FindAll(g => g.name.Contains("Wall"));
-
-                
+                if(g.Count > 0) QuestDatabase.tempGameObject = g;
+                GameObject wall = g.Find(g => g.name == "Wall");
+                wall.SetActive(true);
             },
-            onCompleted = (List<GameObject> g) =>
+            onCompleted = () =>
             {
+                GameObject wall = QuestDatabase.tempGameObject.Find(w => w.name == "Wall");
+				wall.SetActive(false);
+                QuestDatabase.tempGameObject.Clear();
+			},
+        },
 
-            },
-        }
-    };
 
-    
+		new Quest
+		{
+			name = "1_2",
+            prerequisiteQuest = "1_1",
+			description = "Chữa cháy cho ngôi làng",
+			isCompleted = false,
+			isActive = false,
+
+			requiredComponentsKeys = new List<GameObject>(),
+			onActive = (List<GameObject> g) =>
+			{
+				//GameObject wall = g.Find(g => g.name == "Wall");
+				//wall.SetActive(true);
+			},
+			onCompleted = () =>
+			{
+                
+			},
+		}
+	};
 
     public Quest GetQuest(string questName)
     {
@@ -57,9 +79,8 @@ public class QuestDatabase : MonoBehaviour
         if (quest != null) return quest;
         return null;
     }
-
-    public void RemoveQuest(Quest quest)
-    {
-        quests.Remove(quest);
-    }
+	public List<Quest> GetAllQuests()
+	{
+		return quests;
+	}
 }

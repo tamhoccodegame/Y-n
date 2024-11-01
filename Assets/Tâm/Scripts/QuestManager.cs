@@ -1,49 +1,70 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    public QuestDatabase questDatabase;
+	public QuestDatabase questDatabase; // Tham chiếu đến cơ sở dữ liệu nhiệm vụ
+	private List<Quest> activeQuests = new List<Quest>(); // Danh sách nhiệm vụ đang hoạt động
 
-	public void StartQuest(string questName)
+	private void Start()
 	{
-		Quest quest = questDatabase.GetQuest(questName);
-		quest.isActive = true;
-		quest.isCompleted = false;
+		// Khởi động với các nhiệm vụ đầu tiên
+		//ActivateQuest("1_1");
 	}
 
-	public void ActivateQuest(string questName, List<GameObject> components)
+	public void ActiveQuest(string questName)
 	{
 		Quest quest = questDatabase.GetQuest(questName);
-		if (quest != null && !quest.isActive)
-		{
-			quest.isActive = true;
-			quest.onActive?.Invoke(components);
-			Debug.Log($"Quest '{questName}' activated!");
-		}
-	}
 
-	private object[] ResolveRequiredComponents(string[] requiredComponentsKeys)
-	{
-		List<object> components = new List<object>();
-		foreach (string key in requiredComponentsKeys)
+		if (quest != null && !quest.isActive && (string.IsNullOrEmpty(quest.prerequisiteQuest) || IsQuestCompleted(quest.prerequisiteQuest)))
 		{
-			components.Add(GameManager.instance.GetComponentByKey(key));
+			quest.isActive = true; // Đánh dấu nhiệm vụ là đang hoạt động
+			activeQuests.Add(quest); // Thêm nhiệm vụ vào danh sách nhiệm vụ đang hoạt động
+
+			// Gọi phương thức onActive của nhiệm vụ
+			quest.onActive?.Invoke(QuestDatabase.tempGameObject);
+			Debug.Log($"Nhiệm vụ '{quest.name}' đã được kích hoạt: {quest.description}");
 		}
-		return components.ToArray();
+		else if (quest != null && quest.isActive)
+		{
+			Debug.Log($"Nhiệm vụ '{quest.name}' đã hoạt động trước đó.");
+		}
+		else if (quest != null && !IsQuestCompleted(quest.prerequisiteQuest))
+		{
+			Debug.Log($"Nhiệm vụ '{quest.name}' yêu cầu nhiệm vụ '{quest.prerequisiteQuest}' hoàn thành trước.");
+		}
 	}
 
 	public void CompleteQuest(string questName)
 	{
 		Quest quest = questDatabase.GetQuest(questName);
+
 		if (quest != null && quest.isActive && !quest.isCompleted)
 		{
-			quest.isCompleted = true;
-			List<GameObject> components = quest.requiredComponentsKeys;
-			quest.onCompleted?.Invoke(components);
-			Debug.Log($"Quest '{questName}' completed!");
+			quest.CompleteQuest(); // Đánh dấu nhiệm vụ là hoàn thành
+			quest.onCompleted?.Invoke(); // Gọi phương thức onCompleted của nhiệm vụ
+			Debug.Log($"Nhiệm vụ '{quest.name}' đã hoàn thành!");
+
+			// Kiểm tra và kích hoạt nhiệm vụ tiếp theo nếu có
+			ActivateNextQuest(questName);
 		}
+	}
+
+	private void ActivateNextQuest(string completedQuestName)
+	{
+		foreach (Quest quest in questDatabase.GetAllQuests())
+		{
+			if (quest.prerequisiteQuest == completedQuestName)
+			{
+				ActiveQuest(quest.name); // Kích hoạt nhiệm vụ tiếp theo
+			}
+		}
+	}
+
+	private bool IsQuestCompleted(string questName)
+	{
+		Quest quest = questDatabase.GetQuest(questName);
+		return quest != null && quest.isCompleted; // Kiểm tra trạng thái nhiệm vụ
 	}
 }

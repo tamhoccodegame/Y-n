@@ -45,6 +45,55 @@ public class DialogueDatabase : MonoBehaviour
 		},
 
 		new Dialogue
+		{
+			name = "Tuong_Thuat_Su_Viec",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine
+				{
+					speaker = "Yên",
+					sentence = "Có chuyện gì ở đây vậy cậu?"
+				},
+				new DialogueLine
+				{
+					speaker = "Cậu bé chuột",
+					sentence = "Hic hic, hu hu,... Thằng cá sấu.. nó sai đàn em đánh phá làng chúng tôi.."
+				},
+				new DialogueLine
+				{
+					speaker = "Cậu bé chuột",
+					sentence = "Hình như trên tay nó cầm một mảnh đá gì đó làm tăng sức mạnh cho đàn em."
+				},
+				new DialogueLine
+				{
+					speaker = "Yên (nghĩ thầm)",
+					sentence = "Mảnh đá!?..."
+				},
+				new DialogueLine
+				{
+					speaker = "Yên (nghĩ thầm)",
+					sentence = "Có thể là mảnh của Phiến đá Ngọc Nam. Mảnh đá của mình đang cộng hưởng."
+				},
+				new DialogueLine
+				{
+					speaker = "Yên",
+					sentence = "Con cá sấu đó đi về hướng nào thế cậu?"
+				},
+				new DialogueLine
+				{
+					speaker = "Cậu bé chuột",
+					sentence = "Bên kia kìa. Hic hic hu hu"
+				},
+				new DialogueLine
+				{
+					speaker = "Yên",
+					sentence = "Ok Cảm ơn cậu, nhưng trước hết, để tớ giúp đỡ các cậu khôi phục lại ngôi làng nha"
+				},
+			},
+			hasChoice = false,
+		},
+
+		new Dialogue
         {
             name = "MNG_NuocTraiCay",
             lines = new List<DialogueLine>()

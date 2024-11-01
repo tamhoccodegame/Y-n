@@ -163,7 +163,7 @@ public class UIManager : MonoBehaviour
 		questText.gameObject.SetActive(true);
 	}
 
-	public void StopQuest()
+	public void EndQuest()
 	{
 		questText.text = string.Empty;
 		questText.gameObject.SetActive(false);

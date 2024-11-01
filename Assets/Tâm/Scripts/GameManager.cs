@@ -8,16 +8,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("Database and Manager")]
     private UIManager uiManager;
     private AudioManager audioManager;
     private DialogueDatabase dialogueDatabase;
     private DiaryDatabase diaryDatabase;
     private CostumeDatabase costumeDatabase;
 
+    [Header("List")]
 	private List<Diary> unlockedDiaryList = new List<Diary>();
-    private List<Costume> unlockedCostumeList = new List<Costume>();    
+    private List<Costume> unlockedCostumeList = new List<Costume>();
 
-	private bool isControllable = true;
+    [Header("Player")]
+	private bool isPlayerControllable = true;
+    public int currentPlayerHearts;
+
+
+    [Header("Scenes")]
     private string previousScene = null;
     // Start is called before the first frame update
     void Awake()
@@ -41,12 +48,12 @@ public class GameManager : MonoBehaviour
 
     public bool IsControllable()
     {
-        return isControllable;
+        return isPlayerControllable;
     }
 
     public void SetIsControllable(bool _isControllable)
     {
-        isControllable = _isControllable;
+        isPlayerControllable = _isControllable;
     }
 
 	public void StartDialogue(string dialgueName)
@@ -122,10 +129,21 @@ public class GameManager : MonoBehaviour
 	{
         previousScene = SceneManager.GetActiveScene().name;
 		SceneManager.LoadScene(sceneName);
+        uiManager.StartScene();
 	}
 
     public void LoadPreviousScene()
     {
         SceneManager.LoadScene(previousScene);
+    }
+
+    public void UpdateHealthUI(int currentHealth)
+    {
+        uiManager.UpdateHealthUI(currentHealth);
+    }
+
+    public void GameOver()
+    {
+        uiManager.GameOver();
     }
 }

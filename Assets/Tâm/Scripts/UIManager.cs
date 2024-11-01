@@ -10,34 +10,45 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+	[Header("Dialogue")]
 	public GameObject dialoguePanel;
 	public TextMeshProUGUI speaker;
 	public TextMeshProUGUI sentence;
 	public float textSpeed;
 	private int currentDialougeLineIndex;
-
 	public GameObject buttonContainer;
 	public Button dialogueButtonYes;
 	public Button dialogueButtonNo;
 	private Button currentButton;
 	private TextMeshProUGUI buttonYesText;
 	private TextMeshProUGUI buttonNoText;
-
 	private bool isButtonClicked = false;
-
 	private Button currentDialogueButton;
-
 	Coroutine dialogueCoroutine;
 
-
+	[Header("Tabs")]
 	public UIDiaryTab uiDiary;
 	public UICostumeTab uiCostume;
+
+	public GameObject gameOverMenu;
+
+	public GameObject[] hearts;
+
+
 	// Start is called before the first frame update
 	void Start()
     {
 		buttonYesText = dialogueButtonYes.GetComponentInChildren<TextMeshProUGUI>();
 		buttonNoText = dialogueButtonNo.GetComponentInChildren<TextMeshProUGUI>();
 		buttonContainer.SetActive(false);
+		//gameOverMenu.SetActive(false);
+	}
+
+	public void StartScene()
+	{
+		dialoguePanel.SetActive(false);
+		buttonContainer.SetActive(false);
+		//gameOverMenu.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -132,5 +143,19 @@ public class UIManager : MonoBehaviour
 	{
 		uiDiary.UpdateVisual();
 		uiCostume.UpdateVisual();
+	}
+
+	public void UpdateHealthUI(int currentHealth)
+	{
+		for(int i = 0; i < hearts.Length; i++)
+		{
+			hearts[i].SetActive(i < currentHealth);
+		}
+	}
+
+	public void GameOver()
+	{
+		transform.Find("Menu")?.gameObject.SetActive(false);
+		//gameOverMenu.SetActive(true);
 	}
 }

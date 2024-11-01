@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-	[Header("Dialogue")]
+	[Header("==========Dialogue==========")]
 	public GameObject dialoguePanel;
 	public TextMeshProUGUI speaker;
 	public TextMeshProUGUI sentence;
@@ -26,7 +26,9 @@ public class UIManager : MonoBehaviour
 	private Button currentDialogueButton;
 	Coroutine dialogueCoroutine;
 
-	[Header("Tabs")]
+	public TextMeshProUGUI questText;
+
+	[Header("==========Tabs==========")]
 	public UIDiaryTab uiDiary;
 	public UICostumeTab uiCostume;
 
@@ -151,6 +153,20 @@ public class UIManager : MonoBehaviour
 		{
 			hearts[i].SetActive(i < currentHealth);
 		}
+	}
+
+
+	public void StartQuest(Quest quest)
+	{
+		//Cập nhật hiện UI mô tả Quest
+		questText.text = quest.description;
+		questText.gameObject.SetActive(true);
+	}
+
+	public void StopQuest()
+	{
+		questText.text = string.Empty;
+		questText.gameObject.SetActive(false);
 	}
 
 	public void GameOver()

@@ -67,7 +67,7 @@ public class UICostumeTab : MonoBehaviour
 		{
 			currentButtonIndex = 0;
 			DisplayCostumeDetails(unlockedCostumeList[currentButtonIndex]);
-			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
+			EventSystem.current.SetSelectedGameObject(buttonList[0].gameObject);
 		}
 
 		// Cập nhật hiển thị danh sách nhật ký
@@ -90,6 +90,8 @@ public class UICostumeTab : MonoBehaviour
 			{
 				UpdateCostumeListDisplay();
 			}
+
+			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
 		}
 	}
 

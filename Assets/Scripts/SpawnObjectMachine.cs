@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnObjectMachine : MonoBehaviour
 {
     public GameObject[] obstaclePrefab;
+    public Transform topPosition;
+    public Transform bottomPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,17 +22,11 @@ public class SpawnObjectMachine : MonoBehaviour
 
     void SpawnObject()
     {
-        bool isTopOrBottom= Random.value > 0.5f;
+        bool isTopOrBottom = Random.value > 0.5f;
         int obstacleIndex = Random.Range(0, obstaclePrefab.Length);
-
-        Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(1, isTopOrBottom ? 0 : 1, Camera.main.nearClipPlane));
-        spawnPosition.z = 0;
+        Vector3 spawnPosition = new Vector3(transform.position.x, Random.Range(topPosition.position.y, bottomPosition.position.y), 0);
 
         Rigidbody2D obstacle = Instantiate(obstaclePrefab[obstacleIndex], spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
-
-        float obstacleHeight = obstacle.GetComponent<SpriteRenderer>().bounds.size.y;
-
-        obstacle.transform.position += new Vector3(0, isTopOrBottom ? obstacleHeight/2 : -obstacleHeight/2, 0);
 
         obstacle.velocity = new Vector2(-20, 0);
 

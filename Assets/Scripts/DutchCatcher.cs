@@ -13,7 +13,7 @@ public class DutchCatcher : MonoBehaviour
 	private int duckCount = 0;
 	private float timeLeft = 60f; // time
 	private KeyCode[] keys = { KeyCode.Q, KeyCode.E, KeyCode.A, KeyCode.D };
-	public int requiredDuckCount = 10;
+	public int requiredDuckCount = 5;
 	private int currentDuckCount = 0;
 	private int legalErrorsCount = 2;
 	private GameObject currentBubble;
@@ -33,6 +33,7 @@ public class DutchCatcher : MonoBehaviour
 	void Start()
     {
         StartGame();
+		GameManager.instance.HideUI();
     }
 
 	void StartGame()
@@ -95,6 +96,7 @@ public class DutchCatcher : MonoBehaviour
 
 
 		currentBubble = Instantiate(bubblePrefab, spawnPoint.position, Quaternion.identity);
+		currentBubble.GetComponentInChildren<TextMeshPro>().text = keys[randomIndex].ToString();
 		currentBubble.transform.SetParent(spawnPoint.transform, true);
 
 		StartCoroutine(DestroyBubble());
@@ -172,7 +174,7 @@ public class DutchCatcher : MonoBehaviour
 
 
 
-		yield return new WaitForSeconds(0.8f);
+		yield return new WaitForSeconds(1.0f);
 
 		caughtADuckCutscene.SetActive(false);
 		notCaughtADuckCutscene.SetActive(false);

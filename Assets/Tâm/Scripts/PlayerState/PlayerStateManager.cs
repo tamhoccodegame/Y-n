@@ -40,6 +40,11 @@ public class PlayerStateManager : MonoBehaviour
 
         PlayerState = idleState;
         PlayerState.EnterState(this);
+		
+		if(GameManager.instance.hasSavedState)
+		{
+			transform.position = GameManager.instance.playerPosition;
+		}
     }
 
     // Update is called once per frame

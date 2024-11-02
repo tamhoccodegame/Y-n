@@ -9,8 +9,7 @@ public class PlayerHeath : MonoBehaviour
 
 	private void Start()
 	{
-        //Cập nhật lại máu nếu đã chết ở scene trước
-        currentHearts = GameManager.instance.currentPlayerHearts;
+        currentHearts = GameManager.instance.playerHearts;
 		if(currentHearts <= 0)
         {
             currentHearts = maxHearts;
@@ -45,6 +44,6 @@ public class PlayerHeath : MonoBehaviour
 	private void OnDestroy()
 	{
         //Lưu lại máu khi chuyển scene
-        GameManager.instance.currentPlayerHearts = currentHearts;
+        GameManager.instance.playerHearts = currentHearts;
 	}
 }

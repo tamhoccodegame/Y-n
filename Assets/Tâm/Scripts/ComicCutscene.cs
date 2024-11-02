@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class ComicCutscene : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ComicCutscene : MonoBehaviour
 
 	private void Cutscene_stopped(PlayableDirector obj)
 	{
-		GameManager.instance.LoadScene(sceneToLoad);
+		SceneManager.LoadScene(sceneToLoad);
 	}
 
 }

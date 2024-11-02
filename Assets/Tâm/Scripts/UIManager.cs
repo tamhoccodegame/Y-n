@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
 	[Header("==========Tabs==========")]
 	public UIDiaryTab uiDiary;
 	public UICostumeTab uiCostume;
+	public GameObject menu;
 
 	public GameObject gameOverMenu;
 
@@ -45,6 +46,8 @@ public class UIManager : MonoBehaviour
 		buttonYesText = dialogueButtonYes.GetComponentInChildren<TextMeshProUGUI>();
 		buttonNoText = dialogueButtonNo.GetComponentInChildren<TextMeshProUGUI>();
 		buttonContainer.SetActive(false);
+		menu.SetActive(false);
+
 		//gameOverMenu.SetActive(false);
 	}
 
@@ -52,7 +55,7 @@ public class UIManager : MonoBehaviour
 	{
 		dialoguePanel.SetActive(false);
 		buttonContainer.SetActive(false);
-		//gameOverMenu.SetActive(false);
+		menu.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -139,8 +142,7 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUIMenu()
 	{
-		GameObject menu = transform.Find("Menu").gameObject;
-		if(menu != null) menu.SetActive(!menu.activeSelf);
+		menu.SetActive(!menu.activeSelf);
 	}
 
 	public void UpdateVisual()

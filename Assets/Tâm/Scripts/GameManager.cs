@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,11 +26,11 @@ public class GameManager : MonoBehaviour
 
     [Header("==========Player==========")]
 	private bool isPlayerControllable = true;
-    public int currentPlayerHearts;
 
-
-    [Header("==========Scenes==========")]
-    private string previousScene = null;
+    public Vector3 playerPosition;
+    public int playerHearts;
+    public string previousSceneName;
+    public bool hasSavedState = false;
 
 	private Dictionary<string, object> components = new Dictionary<string, object>();
 	// Start is called before the first frame update
@@ -150,24 +151,49 @@ public class GameManager : MonoBehaviour
     {
         uiManager.StartRapidButtonMNG();
     }
+
 	private void Update()
 	{
         if (Input.GetKeyDown(KeyCode.P))
         {
             uiManager.UpdateUIMenu();
         }
+
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            UnlockCostume(Random.value > 0.3f ? "Yen" : "Khi");
+        }
+        
 	}
+
+    public void Save(Vector3 playerPosition, int playerHeats)
+    {
+        this.playerPosition = playerPosition;
+        this.playerHearts = playerHeats;
+		this.previousSceneName = SceneManager.GetActiveScene().name;
+		hasSavedState = true;
+    }
 
 	public void LoadScene(string sceneName)
 	{
-        previousScene = SceneManager.GetActiveScene().name;
+        PlayerHeath player = FindObjectOfType<PlayerHeath>();
+        int playerCurrentHearts = player.currentHearts;
+        Vector3 playerCurrentPosition = player.gameObject.transform.position;
+        Save(playerCurrentPosition, playerCurrentHearts);
+        
 		SceneManager.LoadScene(sceneName);
         uiManager.StartScene();
 	}
 
+    public void HideUI()
+    {
+        uiManager.gameObject.SetActive(false);
+    }
+
     public void LoadPreviousScene()
     {
-        SceneManager.LoadScene(previousScene);
+        SceneManager.LoadScene(previousSceneName);
+        uiManager.gameObject.SetActive(true);
     }
 
     public void UpdateHealthUI(int currentHealth)

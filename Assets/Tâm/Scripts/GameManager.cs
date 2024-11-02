@@ -128,9 +128,28 @@ public class GameManager : MonoBehaviour
 
     public void ActiveQuest(string questName)
     {
-        questManager.ActiveQuest(questName);
+		Quest quest = questDatabase.GetQuest(questName);
+		questManager.ActiveQuest(quest);
+        uiManager.StartQuest(quest);
     }
 
+    public void CompletedQuest(string questName)
+    {
+		Quest quest = questDatabase.GetQuest(questName);
+		questManager.CompleteQuest(quest);
+        uiManager.EndQuest();
+    }
+
+    public void TriggerEndQuest(string questName)
+    {
+        Quest quest = questDatabase.GetQuest(questName);
+        questManager.TriggerEndQuest(quest);
+    }
+
+    public void StartMNGRapidButton()
+    {
+        uiManager.StartRapidButtonMNG();
+    }
 	private void Update()
 	{
         if (Input.GetKeyDown(KeyCode.P))

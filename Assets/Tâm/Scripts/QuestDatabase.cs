@@ -10,11 +10,10 @@ public class Quest
     public string description;
     public bool isCompleted;
     public bool isActive;
-	public string prerequisiteQuest;
 
 	public List<GameObject> requiredComponentsKeys;
 
-	public Action<List<GameObject>> onActive;
+	public Action onActive;
     public Action onCompleted;
 
     public void CompleteQuest()
@@ -31,23 +30,18 @@ public class QuestDatabase : MonoBehaviour
         new Quest
         {
             name = "1_1",
-            prerequisiteQuest = "",
             description = "Đánh bại kẻ địch",
             isCompleted = false,
             isActive = false,
 
             requiredComponentsKeys = new List<GameObject>(),
-            onActive = (List<GameObject> g) =>
+            onActive = () =>
             {
-                if(g.Count > 0) QuestDatabase.tempGameObject = g;
-                GameObject wall = g.Find(g => g.name == "Wall");
-                wall.SetActive(true);
+
             },
             onCompleted = () =>
             {
-                GameObject wall = QuestDatabase.tempGameObject.Find(w => w.name == "Wall");
-				wall.SetActive(false);
-                QuestDatabase.tempGameObject.Clear();
+                
 			},
         },
 
@@ -55,20 +49,19 @@ public class QuestDatabase : MonoBehaviour
 		new Quest
 		{
 			name = "1_2",
-            prerequisiteQuest = "1_1",
 			description = "Chữa cháy cho ngôi làng",
 			isCompleted = false,
 			isActive = false,
 
 			requiredComponentsKeys = new List<GameObject>(),
-			onActive = (List<GameObject> g) =>
+			onActive = () =>
 			{
 				//GameObject wall = g.Find(g => g.name == "Wall");
 				//wall.SetActive(true);
 			},
 			onCompleted = () =>
 			{
-                
+                GameManager.instance.StartDialogue("Tuong_Thuat_Su_Viec");
 			},
 		}
 	};

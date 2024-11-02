@@ -11,9 +11,11 @@ public class Enemy : MonoBehaviour
         Attack,
         Skill,
     }
+	public float attackCooldown = 1.5f;  // Thời gian hồi chiêu sau mỗi đòn tấn công
+	private float nextAttackTime = 0f;  // Biến để kiểm tra thời gian cho đòn tấn công tiếp theo
 
-    protected State currentState = State.Patrol;
-    public Transform player;
+	protected State currentState = State.Patrol;
+    protected Transform player;
     public float chaseRange;
     public float attackRange;
     public float moveSpeed;
@@ -25,16 +27,21 @@ public class Enemy : MonoBehaviour
     private int currentPatrolIndex = 0;
     private int lastPatrolIndex = -1;
 
+    protected bool isCoroutineRunning = false;
+
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        player = GameObject.Find("Player").transform;
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    public virtual void Update()
+	{
+		if (isCoroutineRunning) return;
+
 		UpdateState();
         Debug.Log(GetDirection(player));
 		switch (currentState)
@@ -87,25 +94,46 @@ public class Enemy : MonoBehaviour
 
     }
 
-    void Chase()
+    protected void Chase()
     {
         animator.Play("Walk");
         MoveToTarget(player);
 	}
 
-    void Attack()
+	protected void Attack()
+	{
+		// Kiểm tra nếu đã đến thời gian có thể tấn công tiếp theo
+		if (Time.time >= nextAttackTime)
+		{
+			isCoroutineRunning = true;
+			StartCoroutine(AttackCoroutine());
+			nextAttackTime = Time.time + attackCooldown;  // Đặt thời gian cho đòn tấn công tiếp theo
+		}
+	}
+
+	private IEnumerator AttackCoroutine()
     {
         animator.Play("Attack");
+        yield return new WaitForSeconds(1f);
+        isCoroutineRunning = false;
     }
+
 	protected virtual IEnumerator Skill()
 	{
 		yield return null;
 	}
 
-	void UpdateState()
+	protected virtual void UpdateState()
     {
         float distanceToPlayer = Mathf.Abs(transform.position.x - player.position.x);
 
+        if(rb.velocity.x != 0 )
+        {
+			Vector3 currentLocalScale = transform.localScale;
+			currentLocalScale.x = Mathf.Sign(rb.velocity.x) * Mathf.Abs(currentLocalScale.x);
+			transform.localScale = currentLocalScale;
+		}
+        
         switch (currentState)
         {
             case State.Patrol:

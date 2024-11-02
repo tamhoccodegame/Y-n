@@ -5,66 +5,57 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
 	public QuestDatabase questDatabase; // Tham chiếu đến cơ sở dữ liệu nhiệm vụ
-	private List<Quest> activeQuests = new List<Quest>(); // Danh sách nhiệm vụ đang hoạt động
+
+	public List<GameObject> triggerStartQuests;
+	public List<GameObject> triggerEndQuests;
+	public int currentQuestIndex = 0;
 
 	private void Start()
 	{
 		// Khởi động với các nhiệm vụ đầu tiên
 		//ActivateQuest("1_1");
+		foreach(GameObject start in triggerStartQuests)
+		{
+			start.SetActive(false);
+		}
+		foreach(GameObject end in triggerEndQuests)
+		{
+			end.SetActive(false);
+		}
+		triggerStartQuests[0].SetActive(true);
 	}
 
-	public void ActiveQuest(string questName)
+	public void ActiveQuest(Quest quest)
 	{
-		Quest quest = questDatabase.GetQuest(questName);
-
-		if (quest != null && !quest.isActive && (string.IsNullOrEmpty(quest.prerequisiteQuest) || IsQuestCompleted(quest.prerequisiteQuest)))
+		if (quest != null && !quest.isActive)
 		{
 			quest.isActive = true; // Đánh dấu nhiệm vụ là đang hoạt động
-			activeQuests.Add(quest); // Thêm nhiệm vụ vào danh sách nhiệm vụ đang hoạt động
-
 			// Gọi phương thức onActive của nhiệm vụ
-			quest.onActive?.Invoke(QuestDatabase.tempGameObject);
+			quest.onActive?.Invoke();
 			Debug.Log($"Nhiệm vụ '{quest.name}' đã được kích hoạt: {quest.description}");
-		}
-		else if (quest != null && quest.isActive)
-		{
-			Debug.Log($"Nhiệm vụ '{quest.name}' đã hoạt động trước đó.");
-		}
-		else if (quest != null && !IsQuestCompleted(quest.prerequisiteQuest))
-		{
-			Debug.Log($"Nhiệm vụ '{quest.name}' yêu cầu nhiệm vụ '{quest.prerequisiteQuest}' hoàn thành trước.");
 		}
 	}
 
-	public void CompleteQuest(string questName)
+	public void CompleteQuest(Quest quest)
 	{
-		Quest quest = questDatabase.GetQuest(questName);
-
 		if (quest != null && quest.isActive && !quest.isCompleted)
 		{
 			quest.CompleteQuest(); // Đánh dấu nhiệm vụ là hoàn thành
 			quest.onCompleted?.Invoke(); // Gọi phương thức onCompleted của nhiệm vụ
 			Debug.Log($"Nhiệm vụ '{quest.name}' đã hoàn thành!");
+			currentQuestIndex++; 
 
-			// Kiểm tra và kích hoạt nhiệm vụ tiếp theo nếu có
-			ActivateNextQuest(questName);
+			if(currentQuestIndex <= triggerStartQuests.Count - 1) 
+			triggerStartQuests[currentQuestIndex].SetActive(true);
 		}
 	}
 
-	private void ActivateNextQuest(string completedQuestName)
+	public void TriggerEndQuest(Quest quest)
 	{
-		foreach (Quest quest in questDatabase.GetAllQuests())
+		if(quest != null)
 		{
-			if (quest.prerequisiteQuest == completedQuestName)
-			{
-				ActiveQuest(quest.name); // Kích hoạt nhiệm vụ tiếp theo
-			}
+			triggerEndQuests[currentQuestIndex].SetActive(true);
 		}
 	}
 
-	private bool IsQuestCompleted(string questName)
-	{
-		Quest quest = questDatabase.GetQuest(questName);
-		return quest != null && quest.isCompleted; // Kiểm tra trạng thái nhiệm vụ
-	}
 }

@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
 
 	public GameObject[] hearts;
 
+	public GameObject rapidButtonPanel;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -167,6 +169,16 @@ public class UIManager : MonoBehaviour
 	{
 		questText.text = string.Empty;
 		questText.gameObject.SetActive(false);
+	}
+
+	public void StartRapidButtonMNG()
+	{
+		rapidButtonPanel.SetActive(true);
+	}
+
+	public void EndRapidButtonBNG()
+	{
+		rapidButtonPanel.SetActive(false);
 	}
 
 	public void GameOver()

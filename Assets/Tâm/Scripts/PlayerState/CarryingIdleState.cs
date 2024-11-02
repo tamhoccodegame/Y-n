@@ -6,17 +6,16 @@ public class CarryingIdleState : IPlayerState
 {
 	public void EnterState(PlayerStateManager player)
 	{
-		throw new System.NotImplementedException();
+		player.animator.Play("Idle");
 	}
 
 
 	public void UpdateState(PlayerStateManager player)
 	{
-		throw new System.NotImplementedException();
+		if (player.MoveInput != 0) player.SwitchState(player.carryingWalkingState);
 	}
 	public void ExitState(PlayerStateManager player)
 	{
-		throw new System.NotImplementedException();
 	}
 
 	// Start is called before the first frame update

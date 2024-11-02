@@ -28,10 +28,10 @@ public class TowerOfHanoi : MonoBehaviour
 		{
 			towers[0].Push(disks[i].transform);
 			disks[i].transform.SetParent(pegs[0].transform);
-			Debug.Log(i * 100);
 			RectTransform diskRect = disks[i].GetComponent<RectTransform>();
 			diskRect.anchoredPosition = Vector2.zero;
-			disks[i].transform.localPosition += new Vector3(0, (i*100), 0);
+			float y = i + i * 30;
+			disks[i].transform.localPosition += new Vector3(0, y, 0);
 		}
 	}
 
@@ -123,8 +123,8 @@ public class TowerOfHanoi : MonoBehaviour
 				// Cập nhật vị trí đĩa 
 				movingDisk.transform.SetParent(pegs[toPeg].transform);
 				movingDisk.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
-				movingDisk.transform.localPosition += new Vector3(0, (towers[toPeg].Count - 1) * 100, 0);
+				float y = towers[toPeg].Count - 1 + (30 * (towers[toPeg].Count - 1)) ;
+				movingDisk.transform.localPosition += new Vector3(0, y, 0);
 
 				//StartCoroutine(MoveDiskCoroutine(movingDisk, targetPosition));
 			}

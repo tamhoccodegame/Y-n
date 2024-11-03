@@ -6,6 +6,7 @@ public class WaterBucket : MonoBehaviour
 {
     public bool isFull = false;
     private SpriteRenderer waterBucketRenderer;
+    private SpriteRenderer fullWaterBucketRenderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +30,7 @@ public class WaterBucket : MonoBehaviour
         if(!isFull)
         {
             isFull = true;
+            GetComponent<SpriteRenderer>().sprite = fullWaterBucketRenderer.sprite;
         }
     }
 
@@ -37,6 +39,7 @@ public class WaterBucket : MonoBehaviour
         if (isFull)
         {
             isFull = false;
+            GetComponent<SpriteRenderer>().sprite = waterBucketRenderer.sprite;
         }
     }
 }

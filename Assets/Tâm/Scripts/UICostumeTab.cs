@@ -133,7 +133,7 @@ public class UICostumeTab : MonoBehaviour
 
 	public void UpdateNotify(TextMeshProUGUI text)
 	{
-		text.text = "Bạn mở khoá được một trang phục mới";
+		text.text = "Bạn mở khoá được một trang phục mới, [P] để xem";
 	}
 
 	public void DisplayCostumeDetails(Costume costume)

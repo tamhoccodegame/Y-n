@@ -13,10 +13,13 @@ public class TowerOfHanoi : MonoBehaviour
 	private int fromPegIndex; // Cột từ
 	private int toPegIndex; // Cột đến
 
+	public Button skip;
+
 	int currentPegIndex = 0;
 
 	private void Start()
 	{
+		skip.onClick.AddListener(() => GameManager.instance.LoadPreviousScene());
 		towers = new Stack<Transform>[pegs.Length];
 		for (int i = 0; i < pegs.Length; i++)
 		{
@@ -34,6 +37,7 @@ public class TowerOfHanoi : MonoBehaviour
 			disks[i].transform.localPosition += new Vector3(0, y, 0);
 		}
 	}
+
 
 	private void Update()
 	{
@@ -96,6 +100,7 @@ public class TowerOfHanoi : MonoBehaviour
 			{
 				MoveDisk(fromPegIndex, currentPegIndex);
 				isMoving = false;
+				CheckWinCondition();
 			}
 		}
 	}
@@ -150,5 +155,15 @@ public class TowerOfHanoi : MonoBehaviour
 		}
 		disk.position = targetPosition; // Đặt vị trí cuối cùng
 		isMoving = false;
+	}
+
+	private void CheckWinCondition()
+	{
+		// Điều kiện thắng: tất cả đĩa phải nằm trên cột cuối cùng
+		if (towers[towers.Length - 1].Count == disks.Length)
+		{
+			GameManager.instance.LoadPreviousScene();
+			// Gọi hàm của GameManager hoặc UI để hiển thị thông báo thắng, chuyển cảnh, v.v.
+		}
 	}
 }

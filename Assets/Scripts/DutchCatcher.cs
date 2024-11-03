@@ -44,9 +44,9 @@ public class DutchCatcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		time.text = timeLeft.ToString();
-		duckCaught.text = currentDuckCount.ToString();
-		legalError.text = legalErrorsCount.ToString();
+		time.text = "Thời gian: " + timeLeft.ToString();
+		duckCaught.text = "Vịt đã bắt được: " + currentDuckCount.ToString();
+		legalError.text = "Số lần được bắt hụt " + legalErrorsCount.ToString();
 
 		timeLeft -= Time.deltaTime;
 		if (timeLeft < 0)

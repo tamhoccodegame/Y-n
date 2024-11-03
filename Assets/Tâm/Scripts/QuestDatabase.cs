@@ -61,7 +61,7 @@ public class QuestDatabase : MonoBehaviour
 			},
 			onCompleted = () =>
 			{
-                GameManager.instance.StartDialogue("Tuong_Thuat_Su_Viec");
+                
 			},
 		}
 	};

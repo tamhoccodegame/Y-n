@@ -6,9 +6,22 @@ public class UnlockCostumeEvent : MonoBehaviour, ITriggerable
 {
     public string costumeName;
 
-	public void TriggerAction()
+	public TriggerType GetTriggerType() => TriggerType.Auto;
+
+	public void HidePrompt()
+	{
+	
+	}
+
+	public void OnInteract(PlayerInteraction playerInteration)
 	{
 		GameManager.instance.UnlockCostume(costumeName);
+		Destroy(gameObject);
+	}
+
+	public void ShowPrompt()
+	{
+
 	}
 
 	// Start is called before the first frame update

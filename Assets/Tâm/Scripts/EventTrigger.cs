@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
-public class UnlockDiaryEvent : MonoBehaviour, ITriggerable
+public class EventTrigger : MonoBehaviour, ITriggerable
 {
-    public int diaryOrder;
+    public string audioName;
+    public string dialogueName;
+	public bool isFirstInteract = true;
 
-	public TriggerType GetTriggerType() => TriggerType.Auto;
+	public TriggerType GetTriggerType() => isFirstInteract ? TriggerType.Auto : TriggerType.Optional;
 
 	public void HidePrompt()
 	{
@@ -16,8 +17,7 @@ public class UnlockDiaryEvent : MonoBehaviour, ITriggerable
 
 	public void OnInteract(PlayerInteraction playerInteration)
 	{
-		GameManager.instance.UnlockedDiary(diaryOrder);
-		Destroy(gameObject);
+		
 	}
 
 	public void ShowPrompt()

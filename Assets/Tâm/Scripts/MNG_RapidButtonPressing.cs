@@ -20,6 +20,7 @@ public class MNG_RapidButtonPressing : MonoBehaviour
     void Update()
     {
         slider.value -= Time.deltaTime * decreaseSpeed;
+        slider.value = Mathf.Clamp01(slider.value); 
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -29,6 +30,7 @@ public class MNG_RapidButtonPressing : MonoBehaviour
 
         if(slider.value >= 1f)
         {
+            GameManager.instance.SetIsControllable(true);
             gameObject.SetActive(false);
         }
     }

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class DutchCatcher : MonoBehaviour
 {
 	public GameObject bubblePrefab;
 	public Transform[] spawnPoints; // random spawn position
 	public AudioClip duckSound;
-	public float spawnInterval = 2.0f; // cooldown
+	public float spawnInterval = 1f; // cooldown
 	private int duckCount = 0;
 	private float timeLeft = 60f; // time
-	private KeyCode[] keys = { KeyCode.Q, KeyCode.E, KeyCode.A, KeyCode.D };
+	private KeyCode[] keys = { KeyCode.Q, KeyCode.E, KeyCode.A, KeyCode.D, KeyCode.F, KeyCode.R };
 	public int requiredDuckCount = 5;
 	private int currentDuckCount = 0;
 	private int legalErrorsCount = 2;
@@ -22,32 +23,35 @@ public class DutchCatcher : MonoBehaviour
 	public GameObject caughtADuckCutscene;
 	public GameObject notCaughtADuckCutscene;
 
-	public TextMeshProUGUI time;
-	public TextMeshProUGUI duckCaught;
-	public TextMeshProUGUI legalError;
+	public Text time;
+	public Text duckCaught;
+	public Text legalError;
 
 	private int previousIndex = 0;
+	private int currentKeyIndex = 0;
 	private bool isReceivedinput = false;
 
 	// Start is called before the first frame update
 	void Start()
-    {
-        StartGame();
+	{
+		StartGame();
 		GameManager.instance.HideUI();
-    }
+	}
 
 	void StartGame()
 	{
 		InvokeRepeating(nameof(SpawnBubble), 2f, spawnInterval);
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-		time.text = "Thời gian: " + timeLeft.ToString();
+	private void FixedUpdate()
+	{
+		time.text = "Thời gian: " + timeLeft.ToString("00");
 		duckCaught.text = "Vịt đã bắt được: " + currentDuckCount.ToString();
 		legalError.text = "Số lần được bắt hụt " + legalErrorsCount.ToString();
-
+	}
+	// Update is called once per frame
+	void Update()
+	{
 		timeLeft -= Time.deltaTime;
 		if (timeLeft < 0)
 		{
@@ -68,23 +72,14 @@ public class DutchCatcher : MonoBehaviour
 
 	void SpawnBubble()
 	{
-		if (currentBubble != null)
-		{
-			Destroy(currentBubble);
-		}
+		CancelInvoke(nameof(SpawnBubble));
+		// Gán giá trị ngẫu nhiên cho currentKeyIndex để chọn phím bấm
+		currentKeyIndex = Random.Range(0, keys.Length); // Chọn ngẫu nhiên nút bấm cho bong bóng
+		int randomSpawnIndex = Random.Range(0, spawnPoints.Length); // Chọn ngẫu nhiên vị trí spawn
 
-		int randomIndex;
-		do
-		{
-			randomIndex = Random.Range(0, spawnPoints.Length);
-		}
-		while(randomIndex == previousIndex);
+		Transform spawnPoint = spawnPoints[randomSpawnIndex];
 
-		previousIndex = randomIndex;
-
-		Transform spawnPoint = spawnPoints[randomIndex];
-
-		Debug.Log(keys[randomIndex]);
+		Debug.Log("Phím yêu cầu: " + keys[currentKeyIndex]);
 
 		isCurrentBubbleHasDuckSound = Random.value > 0.5f;
 
@@ -94,19 +89,21 @@ public class DutchCatcher : MonoBehaviour
 		}
 
 
-
+		// Tạo bong bóng tại vị trí spawnPoint với nút bấm ngẫu nhiên
 		currentBubble = Instantiate(bubblePrefab, spawnPoint.position, Quaternion.identity);
-		currentBubble.GetComponentInChildren<TextMeshPro>().text = keys[randomIndex].ToString();
+		currentBubble.GetComponentInChildren<TextMeshPro>().text = keys[currentKeyIndex].ToString(); // Hiển thị phím bấm
 		currentBubble.transform.SetParent(spawnPoint.transform, true);
 
 		StartCoroutine(DestroyBubble());
-
 	}
+
 
 	IEnumerator DestroyBubble()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(spawnInterval);
 		Destroy(currentBubble);
+		isReceivedinput = false;
+		StartGame();
 	}
 
 	IEnumerator PlayDuckSound(Transform spawnPoint)
@@ -116,44 +113,44 @@ public class DutchCatcher : MonoBehaviour
 		AudioSource.PlayClipAtPoint(duckSound, spawnPoint.position);
 	}
 
-	void CheckBubbleAtPosition(int index)
+	void CheckBubbleAtPosition(int inputIndex)
 	{
-		isReceivedinput = true;
 		CancelInvoke(nameof(SpawnBubble));
-		// Kiểm tra nếu có bong bóng tại vị trí tương ứng và đó là bong bóng hiện tại
-		if (currentBubble != null && spawnPoints[index].transform == currentBubble.transform.parent)
+		isReceivedinput = true;
+
+		// Kiểm tra xem người chơi bấm có trùng với phím ngẫu nhiên không
+		if (inputIndex == currentKeyIndex)
 		{
 			if (isCurrentBubbleHasDuckSound)
 			{
-				// Người chơi bắt được con vịt
 				currentDuckCount++;
-				TriggerCutscene(true); // Cắt cảnh bắt vịt
+				TriggerCutscene(true);
 
-				// Kiểm tra điều kiện thắng
 				if (currentDuckCount >= requiredDuckCount)
 				{
-					EndGame(true); // Kết thúc trò chơi với chiến thắng
+					EndGame(true); // Thắng
 				}
 			}
 			else
 			{
-				// Người chơi chụp hụt
-				TriggerCutscene(false); // Cắt cảnh hụt
+				TriggerCutscene(false);
 				legalErrorsCount--;
 			}
 
-			// Hủy bong bóng sau khi xử lý
 			Destroy(currentBubble);
 			currentBubble = null;
 		}
-		//Bấm lộn nút
 		else
 		{
+			// Người chơi bấm sai phím
 			legalErrorsCount--;
 			TriggerCutscene(false);
 			Destroy(currentBubble);
 			currentBubble = null;
 		}
+
+		// Bắt đầu lại sau khi xử lý
+
 	}
 
 	void TriggerCutscene(bool isCaught)
@@ -172,8 +169,6 @@ public class DutchCatcher : MonoBehaviour
 			notCaughtADuckCutscene.SetActive(true);
 		}
 
-
-
 		yield return new WaitForSeconds(1.0f);
 
 		caughtADuckCutscene.SetActive(false);
@@ -186,7 +181,7 @@ public class DutchCatcher : MonoBehaviour
 	void EndGame(bool isWin)
 	{
 		StopAllCoroutines();
-		if(!isWin)
+		if (!isWin)
 		{
 			Debug.Log("Mày ngu! Mày ngu! Mày ngu");
 			GameManager.instance.LoadPreviousScene();
@@ -198,3 +193,4 @@ public class DutchCatcher : MonoBehaviour
 		}
 	}
 }
+

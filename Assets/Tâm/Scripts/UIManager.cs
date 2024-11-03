@@ -110,12 +110,12 @@ public class UIManager : MonoBehaviour
 				dialogueButtonYes.onClick.AddListener(() =>
 				{
 					dialogue.choice.onYes?.Invoke();
-					EndDialogue();
+					EndDialogue(dialogue);
 				});
 				dialogueButtonNo.onClick.AddListener(() =>
 				{
 					dialogue.choice.onNo?.Invoke();
-					EndDialogue();
+					EndDialogue(dialogue);
 				});
 
 				while (!isButtonClicked)
@@ -132,16 +132,17 @@ public class UIManager : MonoBehaviour
 			}
 		}
 
-		EndDialogue();
+		EndDialogue(dialogue);
 	}
 
-	void EndDialogue()
+	void EndDialogue(Dialogue dialogue)
 	{
 		dialoguePanel.SetActive(false);
 		buttonContainer.SetActive(false);
 		speaker.text = string.Empty;
 		sentence.text = string.Empty;
 		GameManager.instance.SetIsControllable(true);
+		dialogue.onCompleted?.Invoke();
 	}
 
 	public void UpdateUIMenu()

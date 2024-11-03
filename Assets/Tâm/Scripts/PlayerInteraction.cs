@@ -5,51 +5,44 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
 	public float interactionRange = 1f; // Khoảng cách tương tác
-	private WaterBucket waterBucket;
 	public Transform holdingPoint;
 
+	private ITriggerable currentTriggerable;
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.E))
+		if(currentTriggerable != null && currentTriggerable.GetTriggerType() == TriggerType.Optional && Input.GetKeyDown(KeyCode.E))
 		{
-			Interact();
-		}
+			currentTriggerable.OnInteract(this);
+		}	
 	}
 
-	private void Interact()
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		// Kiểm tra va chạm trong phạm vi tròn nhỏ quanh người chơi
-		Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, interactionRange);
-
-		foreach (var hit in hits)
+		ITriggerable triggerable = collision.GetComponent<ITriggerable>();
+		if (triggerable != null)
 		{
-			if (hit.CompareTag("WaterBucket") && waterBucket == null)
+			currentTriggerable = triggerable;
+			Debug.Log(triggerable.GetTriggerType().ToString());
+			if(triggerable.GetTriggerType() == TriggerType.Optional)
 			{
-				waterBucket = hit.GetComponent<WaterBucket>();
-				waterBucket.PickUpBucket(holdingPoint);
-				PlayerStateManager player = GetComponent<PlayerStateManager>();
-				player.PlayerState = player.carryingIdleState;
+				currentTriggerable.ShowPrompt();
 			}
-			else if (hit.CompareTag("WaterPool") && waterBucket != null && !waterBucket.isFull)
+			else
 			{
-				waterBucket.FillBucket();
-			}
-			else if (hit.CompareTag("BurningHouse") && waterBucket != null && waterBucket.isFull)
-			{
-				BurningHouse house = hit.GetComponent<BurningHouse>();
-				if (house != null)
-				{
-					house.ExtinguishFire();
-					waterBucket.EmptyBucket();
-				}
+				currentTriggerable.OnInteract(this);
 			}
 		}
 	}
 
-	private void OnDrawGizmosSelected()
+	private void OnTriggerExit2D(Collider2D collision)
 	{
-		// Vẽ một vòng tròn để dễ dàng thấy phạm vi tương tác trong trình chỉnh sửa
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position, interactionRange);
+		if(currentTriggerable != null && collision.GetComponent<ITriggerable>() == currentTriggerable)
+		{
+			if(currentTriggerable.GetTriggerType() == TriggerType.Optional)
+			{
+				currentTriggerable.HidePrompt();
+			}
+			currentTriggerable = null;
+		}
 	}
 }

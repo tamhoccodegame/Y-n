@@ -149,6 +149,7 @@ public class GameManager : MonoBehaviour
 
     public void StartMNGRapidButton()
     {
+        SetIsControllable(false);
         uiManager.StartRapidButtonMNG();
     }
 

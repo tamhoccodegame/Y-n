@@ -19,6 +19,7 @@ public class TowerOfHanoi : MonoBehaviour
 
 	private void Start()
 	{
+		GameManager.instance.HideUI();
 		skip.onClick.AddListener(() => GameManager.instance.LoadPreviousScene());
 		towers = new Stack<Transform>[pegs.Length];
 		for (int i = 0; i < pegs.Length; i++)

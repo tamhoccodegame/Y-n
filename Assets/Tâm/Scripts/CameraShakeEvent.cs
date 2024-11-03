@@ -8,9 +8,23 @@ public class CameraShakeEvent : MonoBehaviour, ITriggerable
     public float amplitude;
     public float frequency;
     public float duration;
-	public void TriggerAction()
+
+	public TriggerType GetTriggerType() => TriggerType.Auto;
+
+	public void HidePrompt()
 	{
-        cameraShake.ShakeCamera(amplitude, frequency, duration);
+		
+	}
+
+	public void OnInteract(PlayerInteraction playerInteration)
+	{
+		cameraShake.ShakeCamera(amplitude, frequency, duration);
+		Destroy(gameObject);
+	}
+
+	public void ShowPrompt()
+	{
+        
 	}
 
 	// Start is called before the first frame update

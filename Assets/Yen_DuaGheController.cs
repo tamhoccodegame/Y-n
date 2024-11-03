@@ -12,6 +12,7 @@ public class Yen_DuaGheController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.instance.HideUI();
         rb = GetComponent<Rigidbody2D>();
     }
 

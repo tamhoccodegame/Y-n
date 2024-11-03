@@ -14,7 +14,7 @@ public class Trigger : MonoBehaviour
 			{
 				foreach(ITriggerable t in trigger)
 				{
-					t.TriggerAction();
+					t.ShowPrompt();
 				}
 			}
 			else Debug.LogError("Triggerable components is not assigned");

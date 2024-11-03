@@ -24,6 +24,7 @@ public class Dialogue
 	public List<DialogueLine> lines;
 	public bool hasChoice;
 	public DialogueChoice choice;
+	public Action onCompleted;
 }
 
 public class DialogueDatabase : MonoBehaviour
@@ -128,6 +129,10 @@ public class DialogueDatabase : MonoBehaviour
 				},
 			},
 			hasChoice = false,
+			onCompleted = () =>
+			{
+				GameManager.instance.LoadScene("Scene_2");
+			}
 		},
 
 		new Dialogue
@@ -177,8 +182,8 @@ public class DialogueDatabase : MonoBehaviour
 				noText = "Con bị sợ tốc độ cao chú ơi...",
 				onYes = () =>
 				{
-                    //GameManager.instance.LoadScene("MNG_Phachenuoc");
-                    Debug.Log("Yes yes yes!");
+					GameManager.instance.LoadScene("MNG_DuaGhe");
+					Debug.Log("Yes yes yes!");
 				},
 				onNo = () =>
 				{

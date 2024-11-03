@@ -28,7 +28,7 @@ public class PlayerHeath : MonoBehaviour
         currentHearts--;
         currentHearts = Mathf.Max(currentHearts, 0);
         GameManager.instance.UpdateHealthUI(currentHearts);
-
+        HitStop.instance.Stop();
         if(currentHearts <= 0)
         {
             Die();

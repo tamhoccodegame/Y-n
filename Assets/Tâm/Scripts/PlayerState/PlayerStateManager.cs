@@ -51,7 +51,12 @@ public class PlayerStateManager : MonoBehaviour
     void Update()
 	{
 		Debug.Log(PlayerState.ToString());
-		if (!GameManager.instance.IsControllable()) return;
+		if (!GameManager.instance.IsControllable())
+		{
+			SwitchState(idleState);
+			return;
+		}
+
 		MoveInput = Input.GetAxis("Horizontal");
 		PlayerState.UpdateState(this);
     }

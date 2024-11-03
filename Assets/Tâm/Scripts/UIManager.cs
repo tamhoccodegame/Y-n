@@ -12,22 +12,22 @@ public class UIManager : MonoBehaviour
 {
 	[Header("==========Dialogue==========")]
 	public GameObject dialoguePanel;
-	public TextMeshProUGUI speaker;
-	public TextMeshProUGUI sentence;
+	public Text speaker;
+	public Text sentence;
 	public float textSpeed;
 	private int currentDialougeLineIndex;
 	public GameObject buttonContainer;
 	public Button dialogueButtonYes;
 	public Button dialogueButtonNo;
 	private Button currentButton;
-	private TextMeshProUGUI buttonYesText;
-	private TextMeshProUGUI buttonNoText;
+	private Text buttonYesText;
+	private Text buttonNoText;
 	private bool isButtonClicked = false;
 	private Button currentDialogueButton;
 	Coroutine dialogueCoroutine;
 
-	public TextMeshProUGUI questText;
-	public TextMeshProUGUI notifyText;
+	public Text questText;
+	public Text notifyText;
 
 	[Header("==========Tabs==========")]
 	public UIDiaryTab uiDiary;
@@ -47,8 +47,8 @@ public class UIManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		buttonYesText = dialogueButtonYes.GetComponentInChildren<TextMeshProUGUI>();
-		buttonNoText = dialogueButtonNo.GetComponentInChildren<TextMeshProUGUI>();
+		buttonYesText = dialogueButtonYes.GetComponentInChildren<Text>();
+		buttonNoText = dialogueButtonNo.GetComponentInChildren<Text>();
 		buttonContainer.SetActive(false);
 		menu.SetActive(false);
 
@@ -157,7 +157,7 @@ public class UIManager : MonoBehaviour
 		StartCoroutine(UpdateNotify(notifyText));
 	}
 
-	IEnumerator UpdateNotify(TextMeshProUGUI text)
+	IEnumerator UpdateNotify(Text text)
 	{
 		if (isCostumeUnlocked)
 		{

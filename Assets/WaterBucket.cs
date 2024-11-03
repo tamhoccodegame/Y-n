@@ -5,8 +5,8 @@ using UnityEngine;
 public class WaterBucket : MonoBehaviour
 {
     public bool isFull = false;
-    private SpriteRenderer waterBucketRenderer;
-    private SpriteRenderer fullWaterBucketRenderer;
+    public Sprite waterBucketRenderer;
+    public Sprite fullWaterBucketRenderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +30,8 @@ public class WaterBucket : MonoBehaviour
         if(!isFull)
         {
             isFull = true;
-            GetComponent<SpriteRenderer>().sprite = fullWaterBucketRenderer.sprite;
+            GetComponent<SpriteRenderer>().sprite = fullWaterBucketRenderer;
+            GameManager.instance.PlayAudio("Muc_Nuoc");
         }
     }
 
@@ -39,7 +40,8 @@ public class WaterBucket : MonoBehaviour
         if (isFull)
         {
             isFull = false;
-            GetComponent<SpriteRenderer>().sprite = waterBucketRenderer.sprite;
-        }
-    }
+            GetComponent<SpriteRenderer>().sprite = waterBucketRenderer;
+			GameManager.instance.PlayAudio("Dap_Lua");
+		}
+	}
 }

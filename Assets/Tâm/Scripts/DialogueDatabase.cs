@@ -28,8 +28,45 @@ public class Dialogue
 
 public class DialogueDatabase : MonoBehaviour
 {
-    public List<Dialogue> dialogues = new List<Dialogue>()
-    {
+	public List<Dialogue> dialogues = new List<Dialogue>()
+	{
+		new Dialogue
+		{
+			name = "Start_Scene_1",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine
+				{
+					speaker = "Yên",
+					sentence = "Đây là đâu vậy nhỉ? Mình đi bộ suốt cả đêm qua rồi..",
+				},
+				new DialogueLine
+				{
+					speaker = "Yên",
+					sentence = "Sao nơi này u ám quá... Hình như phía trước có gì đó.",
+				}
+			},
+			hasChoice = false,
+		},
+
+		new Dialogue
+		{
+			name = "Start_Scene_2",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine
+				{
+					speaker = "Cô Nhung Bán Nước",
+					sentence = "Cám ơn con đã giúp làng tụi cô!",
+				},
+				new DialogueLine
+				{
+					speaker = "Cô Nhung Bán Nước",
+					sentence = "Để ăn mừng chiến thắng, chung ta sẽ mở lễ hội!!",
+				}
+			}
+		},
+
 		new Dialogue
 		{
 			name = "Chuot_Khoc",
@@ -38,7 +75,7 @@ public class DialogueDatabase : MonoBehaviour
 				new DialogueLine
 				{
 					speaker = "Cậu bé chuột",
-					sentence = "Chít chít.... Cứu béee..."
+					sentence = "Chít chít.... Cứu em với..."
 				},
 			},
 			hasChoice = false,
@@ -52,12 +89,12 @@ public class DialogueDatabase : MonoBehaviour
 				new DialogueLine
 				{
 					speaker = "Yên",
-					sentence = "Có chuyện gì ở đây vậy cậu?"
+					sentence = "Có chuyện gì ở đây vậy em?"
 				},
 				new DialogueLine
 				{
 					speaker = "Cậu bé chuột",
-					sentence = "Hic hic, hu hu,... Thằng cá sấu.. nó sai đàn em đánh phá làng chúng tôi.."
+					sentence = "Hic hic, hu hu,... Thằng cá sấu.. nó sai đàn em đánh phá làng chúng em.."
 				},
 				new DialogueLine
 				{
@@ -77,7 +114,7 @@ public class DialogueDatabase : MonoBehaviour
 				new DialogueLine
 				{
 					speaker = "Yên",
-					sentence = "Con cá sấu đó đi về hướng nào thế cậu?"
+					sentence = "Con cá sấu đó đi về hướng nào thế em?"
 				},
 				new DialogueLine
 				{
@@ -87,40 +124,40 @@ public class DialogueDatabase : MonoBehaviour
 				new DialogueLine
 				{
 					speaker = "Yên",
-					sentence = "Ok Cảm ơn cậu, nhưng trước hết, để tớ giúp đỡ các cậu khôi phục lại ngôi làng nha"
+					sentence = "Ok Cảm ơn em, nhưng trước hết, để anh giúp đỡ dân làng khôi phục lại ngôi làng nha"
 				},
 			},
 			hasChoice = false,
 		},
 
 		new Dialogue
-        {
-            name = "MNG_NuocTraiCay",
-            lines = new List<DialogueLine>()
-            {
-                new DialogueLine 
-                { 
-                    speaker = "Cô Nhung Bán Nước", 
-                    sentence = "Ê cậu trai ơi, có muốn thử tài pha chế nước trái cây không? Cô chỉ cho!"
-                },
-            },
-            hasChoice = true,
-            choice = new DialogueChoice
-            {
-                yesText = "Dạ, cho con thử với!",
-                noText = "Hì…Dạ thui cô",
-                onYes = () =>
-                {
+		{
+			name = "MNG_NuocTraiCay",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine
+				{
+					speaker = "Cô Nhung Bán Nước",
+					sentence = "Ê cậu trai ơi, có muốn thử tài pha chế nước trái cây không? Cô chỉ cho!"
+				},
+			},
+			hasChoice = true,
+			choice = new DialogueChoice
+			{
+				yesText = "Dạ, cho con thử với!",
+				noText = "Hì…Dạ thui cô",
+				onYes = () =>
+				{
 					GameManager.instance.LoadScene("MNG_Phachenuoc");
 					Debug.Log("Yes yes yes!");
-                },
+				},
 				onNo = () =>
 				{
                     //GameManager.instance.LoadScene("MNG_Phachenuoc");
                     Debug.Log("No no no");
-                }
+				}
 			}
-        },
+		},
 
 		new Dialogue
 		{

@@ -11,8 +11,8 @@ public class UIDiaryTab : MonoBehaviour
 	public Button buttonTemplate;
 	public GameObject detailContainer; // Container cho chi tiết nhật ký, như hình ảnh và nội dung
 	public Image diaryImage;
-	public TextMeshProUGUI diaryName;
-	public TextMeshProUGUI diaryLines;
+	public Text diaryName;
+	public Text diaryLines;
 
 	public List<Button> buttonList;
 	private int currentButtonIndex;
@@ -127,7 +127,7 @@ public class UIDiaryTab : MonoBehaviour
 		}
 	}
 
-	public void UpdateNotify(TextMeshProUGUI text)
+	public void UpdateNotify(Text text)
 	{
 		text.text = "Bạn đã mở khoá một nhật ký mới, [P] để xem";
 	}

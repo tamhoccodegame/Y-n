@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     public int playerHearts;
     public string previousSceneName;
     public bool hasSavedState = false;
-
-	private Dictionary<string, object> components = new Dictionary<string, object>();
 	// Start is called before the first frame update
 	void Awake()
     {

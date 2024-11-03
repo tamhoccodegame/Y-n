@@ -11,8 +11,8 @@ public class UICostumeTab : MonoBehaviour
 	public Button buttonTemplate;
 	public GameObject detailContainer; // Container cho chi tiết nhật ký, như hình ảnh và nội dung
 	public Image costumeImage;
-	public TextMeshProUGUI costumeName;
-	public TextMeshProUGUI costumeInform;
+	public Text costumeName;
+	public Text costumeInform;
 
 	public List<Button> buttonList;
 	private int currentButtonIndex;
@@ -114,7 +114,7 @@ public class UICostumeTab : MonoBehaviour
 		{
 			Costume costume = unlockedCostumeList[i];
 			Button newButton = Instantiate(buttonTemplate, listContainer);
-			newButton.GetComponentInChildren<TextMeshProUGUI>().text = costume.costumeName; // Gán tên trang phục cho nút
+			newButton.GetComponentInChildren<Text>().text = costume.costumeName; // Gán tên trang phục cho nút
 			newButton.gameObject.SetActive(true);
 			buttonList.Add(newButton);
 
@@ -131,7 +131,7 @@ public class UICostumeTab : MonoBehaviour
 		}
 	}
 
-	public void UpdateNotify(TextMeshProUGUI text)
+	public void UpdateNotify(Text text)
 	{
 		text.text = "Bạn mở khoá được một trang phục mới, [P] để xem";
 	}

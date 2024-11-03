@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
 	Coroutine dialogueCoroutine;
 
 	public TextMeshProUGUI questText;
+	public TextMeshProUGUI notifyText;
 
 	[Header("==========Tabs==========")]
 	public UIDiaryTab uiDiary;
@@ -38,6 +39,9 @@ public class UIManager : MonoBehaviour
 	public GameObject[] hearts;
 
 	public GameObject rapidButtonPanel;
+
+	public bool isDiaryUnlocked = false;
+	public bool isCostumeUnlocked = false;
 
 
 	// Start is called before the first frame update
@@ -142,6 +146,7 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUIMenu()
 	{
+		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
 		menu.SetActive(!menu.activeSelf);
 	}
 
@@ -149,6 +154,30 @@ public class UIManager : MonoBehaviour
 	{
 		uiDiary.UpdateVisual();
 		uiCostume.UpdateVisual();
+		StartCoroutine(UpdateNotify(notifyText));
+	}
+
+	IEnumerator UpdateNotify(TextMeshProUGUI text)
+	{
+		if (isCostumeUnlocked)
+		{
+			text.gameObject.SetActive(true);
+			uiCostume.UpdateNotify(text);
+			yield return new WaitForSeconds(3f);
+			text.gameObject.SetActive(false);
+			yield return new WaitForSeconds(1f);
+			isCostumeUnlocked = false;
+		}
+
+		if (isDiaryUnlocked)
+		{
+			text.gameObject.SetActive(true);
+			uiDiary.UpdateNotify(text);
+			yield return new WaitForSeconds(3f);
+			text.gameObject.SetActive(false);
+			yield return new WaitForSeconds(1f);
+			isDiaryUnlocked = false;
+		}
 	}
 
 	public void UpdateHealthUI(int currentHealth)

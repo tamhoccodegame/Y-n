@@ -2,22 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class SpawnObjectMachine : MonoBehaviour
 {
     public GameObject[] obstaclePrefab;
     public Transform topPosition;
     public Transform bottomPosition;
+
+    public PlayableDirector completeCutscene;
+
+    public float currentTime;
+    public float completeTime;
+    public Slider slider;
+
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(SpawnObject), 1f, 3.5f);
+        InvokeRepeating(nameof(SpawnObject), 3f, 3.5f);
+		completeCutscene.stopped += CompleteCutscene_stopped;
     }
 
-    // Update is called once per frame
-    void Update()
+	private void CompleteCutscene_stopped(PlayableDirector obj)
+	{
+		GameManager.instance.LoadPreviousScene();
+	}
+
+	// Update is called once per frame
+	void Update()
     {
-        
+        if (Time.time < 4f) return;
+
+        slider.value = currentTime / completeTime;
+
+        currentTime += Time.deltaTime;
+
+        if(currentTime >= completeTime)
+        {
+            completeCutscene.Play();
+        }
     }
 
     void SpawnObject()
@@ -28,7 +52,7 @@ public class SpawnObjectMachine : MonoBehaviour
 
         Rigidbody2D obstacle = Instantiate(obstaclePrefab[obstacleIndex], spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
 
-        obstacle.velocity = new Vector2(-20, 0);
+        obstacle.velocity = new Vector2(-40, 0);
 
         Destroy(obstacle.gameObject, 3f);
     }

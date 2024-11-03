@@ -12,8 +12,8 @@ public class Costume
 
 public class CostumeDatabase : MonoBehaviour
 {
-    public List<Costume> costumeList = new List<Costume>();
-    
+    public List<Costume> costumeList;   
+
     public Costume GetCostume(string costumeName)
     {
         Costume costume = costumeList.Find(c => c.costumeName == costumeName);

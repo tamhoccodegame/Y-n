@@ -9,7 +9,7 @@ public class CloudSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(SpawnCloud), 1f, 5f);
+        InvokeRepeating(nameof(SpawnCloud), 1f, 2f);
     }
 
     void SpawnCloud()

@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         {
 			unlockedDiaryList.Add(diary);
 			uiManager.UpdateVisual();
+            uiManager.isDiaryUnlocked = true;
 		}
         else
         {
@@ -115,6 +116,7 @@ public class GameManager : MonoBehaviour
         {
             unlockedCostumeList.Add(costume);
             uiManager.UpdateVisual();
+            uiManager.isCostumeUnlocked = true;
         }
         else
         {
@@ -158,12 +160,6 @@ public class GameManager : MonoBehaviour
         {
             uiManager.UpdateUIMenu();
         }
-
-        if (Input.GetKeyDown(KeyCode.KeypadPlus))
-        {
-            UnlockCostume(Random.value > 0.3f ? "Yen" : "Khi");
-        }
-        
 	}
 
     public void Save(Vector3 playerPosition, int playerHeats)

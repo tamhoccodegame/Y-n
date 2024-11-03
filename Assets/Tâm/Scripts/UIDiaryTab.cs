@@ -127,5 +127,9 @@ public class UIDiaryTab : MonoBehaviour
 		}
 	}
 
+	public void UpdateNotify(TextMeshProUGUI text)
+	{
+		text.text = "Bạn đã mở khoá một nhật ký mới";
+	}
 
 }

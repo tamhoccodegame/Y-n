@@ -17,12 +17,11 @@ public class EnemySpawner : MonoBehaviour
 
 	private void CheckAllEnemiesDefeated()
 	{
-		if (enemyHasSpawned < enemyToSpawn) return; // Không kiểm tra nếu chưa spawn đủ số lượng quái
-
 		bool allEnemiesDefeated = true;
+		Debug.Log(allEnemiesDefeated);
 		foreach (var enemy in enemySpawned)
 		{
-			if (enemy.GetComponent<EnemyNghi>() != null) // Nếu còn ít nhất một quái còn sống
+			if (enemy != null) // Nếu còn ít nhất một quái còn sống
 			{
 				allEnemiesDefeated = false;
 				break;

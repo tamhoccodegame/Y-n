@@ -251,6 +251,20 @@ public class DialogueDatabase : MonoBehaviour
 			}
 		},
 
+		new Dialogue()
+		{
+			name = "BatVitLacDuong",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine()
+				{
+					speaker = "Người dân",
+					sentence = "Êeee nhỏ kia! Vịt ở đây mà đi đâu vậy???",
+				}
+			},
+			hasChoice = false,
+		}
+
 	};
 
     

@@ -8,6 +8,7 @@ public class JumpingState : IPlayerState
 		player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
 		player.jumpTimeCounter = player.maxJumpTime;
 		GameManager.instance.PlayAudio("Jump");
+		player.animator.Play("Jump");
 	}
 
 	public void UpdateState(PlayerStateManager player)
@@ -27,7 +28,7 @@ public class JumpingState : IPlayerState
 			player.jumpTimeCounter = 0;
 		}
 
-		if(player.rb.velocity.y == 0)
+		if(player.isGrounded)
 		{
 			if (player.MoveInput != 0) player.SwitchState(player.walkingState);
 			else player.SwitchState(player.idleState);

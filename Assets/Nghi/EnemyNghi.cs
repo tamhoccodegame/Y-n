@@ -42,7 +42,6 @@ public class EnemyNghi : MonoBehaviour
     void Update()
     {
         float distanceToPlayer = Mathf.Abs(transform.position.x - player.position.x);
-        Debug.Log(distanceToPlayer);
         switch (currentState)
         {
             case State.Patrolling:
@@ -62,10 +61,10 @@ public class EnemyNghi : MonoBehaviour
 
     [ContextMenu("TakeDamage")]
     public void TakeDamge()
-    {
+	{
+        GetComponent<SimpleFlash>().Flash();
         currentHealth--;
         currentHealth = Mathf.Max(currentHealth, 0);
-        GetComponent<SimpleFlash>().Flash();
         if(currentHealth == 0)
         {
             Die();
@@ -74,7 +73,7 @@ public class EnemyNghi : MonoBehaviour
 
     private void Die()
     {
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     void HandleFlip()
@@ -92,7 +91,7 @@ public class EnemyNghi : MonoBehaviour
     {
         MoveTo(patrolPoints[currentPatrolIndex].position, patrolSpeed);
 		// Kiểm tra nếu đã tới điểm tuần tra hiện tại
-		if (Mathf.Abs(transform.position.x - patrolPoints[currentPatrolIndex].position.x) < 0.2f)
+		if (Mathf.Abs(transform.position.x - patrolPoints[currentPatrolIndex].position.x) < 0.5f)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
         }
@@ -192,6 +191,6 @@ public class EnemyNghi : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-        Gizmos.DrawSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
 	}
 }

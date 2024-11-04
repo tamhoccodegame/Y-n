@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 	public GameObject[] hearts;
 
 	public GameObject rapidButtonPanel;
+	public GameObject timingPanel;
 
 	public bool isDiaryUnlocked = false;
 	public bool isCostumeUnlocked = false;
@@ -206,6 +207,11 @@ public class UIManager : MonoBehaviour
 	public void StartRapidButtonMNG()
 	{
 		rapidButtonPanel.SetActive(true);
+	}
+
+	public void StartMNGTiming()
+	{
+		timingPanel.SetActive(true);
 	}
 
 	public void EndRapidButtonBNG()

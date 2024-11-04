@@ -159,6 +159,12 @@ public class GameManager : MonoBehaviour
 		uiManager.StartRapidButtonMNG();
 	}
 
+	public void StartMNGTiming()
+	{
+		SetIsControllable(false);
+		uiManager.StartMNGTiming();
+	}
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.P))

@@ -263,8 +263,40 @@ public class DialogueDatabase : MonoBehaviour
 				}
 			},
 			hasChoice = false,
-		}
+		},
 
+		new Dialogue()
+		{
+			name = "GapThanHo",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "!!!!",
+				},
+
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Chuyện gì vậy? Hình như nó đang cần mình giúp đỡ",
+				}
+			},
+			hasChoice = false,
+		},
+
+		new Dialogue()
+		{
+			name = "GiupDoThaiPhu",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Trông cô ấy có vẻ ổn hơn rồi...",
+				}
+			}
+		},
 	};
 
     

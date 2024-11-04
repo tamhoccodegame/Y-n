@@ -8,6 +8,7 @@ TagManager:
   - WaterPool
   - BurningHouse
   - Limit
+  - Woman
   layers:
   - Default
   - TransparentFX

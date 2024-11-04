@@ -21,8 +21,6 @@ public class PlayerStateManager : MonoBehaviour
 	public float maxJumpTime;
 	public float jumpTimeCounter;
 
-	public GameObject feetBoxCast;
-
 	public float MoveInput {  get; private set; }
 
 	public Rigidbody2D rb { get; private set; }

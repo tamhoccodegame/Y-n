@@ -23,23 +23,30 @@ public class TimingMNG : MonoBehaviour
         CheckInput();
     }
 
-    void MoveLine()
-    {
-        if (movingRight)
-        {
-            line.position += Vector3.right * speed * Time.deltaTime;
-            if (line.anchoredPosition.x >= range.rect.width)
-                movingRight = false;
-        }
-        else
-        {
-            line.position -= Vector3.right * speed * Time.deltaTime;
-            if (line.anchoredPosition.x <= startPos.x)
-                movingRight = true;
-        }
-    }
+	void MoveLine()
+	{
+		float moveAmount = speed * Time.deltaTime; // Sử dụng Time.deltaTime để không phụ thuộc vào FPS
 
-    void CheckInput()
+		if (movingRight)
+		{
+			line.position += Vector3.right * moveAmount;
+
+			// Kiểm tra giới hạn phải của range
+			if (line.anchoredPosition.x >= startPos.x + range.rect.width)
+				movingRight = false;
+		}
+		else
+		{
+			line.position -= Vector3.right * moveAmount;
+
+			// Kiểm tra giới hạn trái của range
+			if (line.anchoredPosition.x <= startPos.x)
+				movingRight = true;
+		}
+	}
+
+
+	void CheckInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {

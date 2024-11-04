@@ -27,6 +27,7 @@ public class PlayerHeath : MonoBehaviour
     {
         currentHearts--;
         currentHearts = Mathf.Max(currentHearts, 0);
+        GetComponent<SimpleFlash>().Flash();
         GameManager.instance.UpdateHealthUI(currentHearts);
         HitStop.instance.Stop();
         if(currentHearts <= 0)

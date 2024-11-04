@@ -141,7 +141,7 @@ public class UICostumeTab : MonoBehaviour
 		//detailContainer.SetActive(true); // Hiển thị phần chi tiết
 		costumeImage.sprite = costume.costumeSprite;
 		costumeName.text = costume.costumeName;
-		costumeInform.text = costume.costumerInform;
+		costumeInform.text = costume.costumerInform;	
 	}
 
 

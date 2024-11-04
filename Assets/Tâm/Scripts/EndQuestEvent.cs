@@ -6,6 +6,7 @@ public class EndQuestEvent : MonoBehaviour, ITriggerable
 
 {
     public string questName;
+	public GameObject nextObjectToActive;
 
 	public TriggerType GetTriggerType() => TriggerType.Auto;
 
@@ -17,6 +18,7 @@ public class EndQuestEvent : MonoBehaviour, ITriggerable
 	public void OnInteract(PlayerInteraction playerInteration)
 	{
 		GameManager.instance.CompletedQuest(questName);
+		nextObjectToActive?.SetActive(true);
 		Destroy(gameObject);
 	}
 

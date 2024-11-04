@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		PlayerHeath playerHeath = collision.GetComponent<PlayerHeath>();
+		EnemyNghi enemy = collision.GetComponent<EnemyNghi>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		if (playerHeath)
+		{
+			playerHeath.TakeDamage();
+		}
+
+		if (enemy)
+		{
+			enemy.TakeDamge();
+		}
+	}
 }

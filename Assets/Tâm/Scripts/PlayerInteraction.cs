@@ -25,11 +25,11 @@ public class PlayerInteraction : MonoBehaviour
 			Debug.Log(triggerable.GetTriggerType().ToString());
 			if(triggerable.GetTriggerType() == TriggerType.Optional)
 			{
-				currentTriggerable.ShowPrompt();
+				triggerable.ShowPrompt();
 			}
-			else
+			else if(triggerable.GetTriggerType() == TriggerType.Auto) 
 			{
-				currentTriggerable.OnInteract(this);
+				triggerable.OnInteract(this);
 			}
 		}
 	}

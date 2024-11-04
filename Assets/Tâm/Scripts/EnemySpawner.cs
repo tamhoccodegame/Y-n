@@ -54,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
 
 		if (allEnemiesDefeated)
 		{
-			GameManager.instance.TriggerEndQuest("1_2");
+			GameManager.instance.TriggerEndQuest("1_1");
 			enabled = false; // Vô hiệu hóa script này để tránh gọi lại TriggerEndQuest
 		}
 	}

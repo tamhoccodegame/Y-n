@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyNghi : MonoBehaviour
 {
+    public int maxHealth;
+    public int currentHealth;
+
     public float attackCooldown = 2f;
     public float attackDuration = 0.5f;
     public float cooldownTimer = 0f;
@@ -14,29 +17,32 @@ public class Enemy : MonoBehaviour
     public float detectionRange = 5f; // Phạm vi phát hiện người chơi
     public float chaseRange = 10f; // Phạm vi tối đa để đuổi theo
     public float attackRange = 1.5f; // Phạm vi tấn công
-    public Transform player; // Tham chiếu đến đối tượng người chơi
+    private Transform player; // Tham chiếu đến đối tượng người chơi
 
     private int currentPatrolIndex = 0;
     private Vector3 startingPosition;
     private enum State { Patrolling, Chasing, Attacking, Returning }
     private State currentState;
     private Rigidbody2D rb;
+    private Animator animator;
     private bool isAttacking = false;
     private bool isFacingRight = true; // Biến lưu trạng thái hướng
 
     void Start()
     {
+        player = GameObject.Find("Player").transform;
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         startingPosition = transform.position;
         currentState = State.Patrolling;
+        maxHealth = currentHealth;
     }
 
     void Update()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        float distanceToPlayer = Mathf.Abs(transform.position.x - player.position.x);
 
-        HandleFlip();
-
+        
         switch (currentState)
         {
             case State.Patrolling:
@@ -52,42 +58,40 @@ public class Enemy : MonoBehaviour
                 ReturnBehavior();
                 break;
         }
+	}
+
+    [ContextMenu("TakeDamage")]
+    public void TakeDamge()
+    {
+        currentHealth = Mathf.Clamp(currentHealth--, 0, maxHealth);
+        GetComponent<SimpleFlash>().Flash();
+        if(currentHealth == 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 
     void HandleFlip()
     {
-        // Lấy hướng di chuyển của kẻ thù
-        Vector3 direction = player.position - transform.position;
-
-        // Kiểm tra nếu đang đi về bên phải nhưng chưa hướng mặt về bên phải
-        if (direction.x > 0 && !isFacingRight)
+        if (rb.velocity.x != 0 && !isAttacking)
         {
-            Flip();
-        }
-        // Kiểm tra nếu đang đi về bên trái nhưng chưa hướng mặt về bên trái
-        else if (direction.x < 0 && isFacingRight)
-        {
-            Flip();
-        }
-    }
+			Vector3 currentLocalScale = transform.localScale;
+			currentLocalScale.x = Mathf.Abs(currentLocalScale.x) * Mathf.Sign(rb.velocity.x);
+			transform.localScale = currentLocalScale;
+		}
+	}
 
-    void Flip()
-    {
-        // Đảo ngược giá trị isFacingRight
-        isFacingRight = !isFacingRight;
-
-        // Đảo hướng scale trên trục X
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        transform.localScale = localScale;
-    }
 
     void PatrolBehavior(float distanceToPlayer)
     {
         MoveTo(patrolPoints[currentPatrolIndex].position, patrolSpeed);
-
-        // Kiểm tra nếu đã tới điểm tuần tra hiện tại
-        if (Vector2.Distance(transform.position, patrolPoints[currentPatrolIndex].position) < 0.2f)
+		// Kiểm tra nếu đã tới điểm tuần tra hiện tại
+		if (Mathf.Abs(transform.position.x - patrolPoints[currentPatrolIndex].position.x) < 0.2f)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
         }
@@ -96,16 +100,18 @@ public class Enemy : MonoBehaviour
         if (distanceToPlayer <= detectionRange)
         {
             currentState = State.Chasing;
-        }
-    }
+		}
+		HandleFlip();
 
-    void ChaseBehavior(float distanceToPlayer)
+	}
+
+	void ChaseBehavior(float distanceToPlayer)
     {
         // Kiểm tra nếu người chơi trong tầm đánh
         if (distanceToPlayer <= attackRange)
         {
             currentState = State.Attacking;
-            rb.velocity = Vector2.zero; // Dừng lại để tấn công
+            //rb.velocity = Vector2.zero; // Dừng lại để tấn công
         }
         else
         {
@@ -116,10 +122,12 @@ public class Enemy : MonoBehaviour
         if (distanceToPlayer > chaseRange)
         {
             currentState = State.Returning;
-        }
-    }
+		}
+		HandleFlip();
 
-    void AttackBehavior(float distanceToPlayer)
+	}
+
+	void AttackBehavior(float distanceToPlayer)
     {
         // Nếu đang ở tầm đánh, thực hiện đòn tấn công
         if (!isAttacking)
@@ -175,17 +183,13 @@ public class Enemy : MonoBehaviour
 
     IEnumerator PerformAttack()
     {
-        Animator walkAnimation = GetComponent<Animator>();
-        walkAnimation.SetBool("isWalk", false);
         isAttacking = true;
         // Giả lập đòn tấn công (thời gian delay giữa các đòn tấn công)
-        Animator attackAnimation = GetComponent<Animator>();
-        attackAnimation.SetTrigger("isAttack");
+        animator.SetTrigger("isAttack");
         Debug.Log("Enemy attacked!");
 
         //yield return new WaitForEndOfFrame();
         //attackAnimation.ResetTrigger("isAttack");
-        yield return new WaitForSeconds(2f); // Thời gian delay giữa các đòn tấn công
 
         //Trong luc don danh dien ra
         yield return new WaitForSeconds(attackDuration);
@@ -202,7 +206,7 @@ public class Enemy : MonoBehaviour
         MoveTo(startingPosition, patrolSpeed);
 
         // Nếu đã trở lại vị trí ban đầu, chuyển về tuần tra
-        if (Vector2.Distance(transform.position, startingPosition) < 0.2f)
+        if (Vector2.Distance(transform.position, startingPosition) < 0.5f)
         {
             currentState = State.Patrolling;
         }
@@ -210,10 +214,8 @@ public class Enemy : MonoBehaviour
 
     void MoveTo(Vector3 target, float speed)
     {
-        Animator walkAnimation = GetComponent<Animator>();
-        walkAnimation.SetBool("isWalk", true);
         Vector3 direction = (target - transform.position).normalized;
-        rb.MovePosition(transform.position + direction * speed * Time.deltaTime);
+        rb.velocity = new Vector2(speed * direction.x, rb.velocity.y);
     }
 
 

@@ -15,7 +15,7 @@ public class UIMInigameEvent_2 : MonoBehaviour, ITriggerable
 
 	public void OnInteract(PlayerInteraction playerInteration)
 	{
-		GameManager.instance.StartMNGTiming();
+		
 	}
 
 	public void ShowPrompt()

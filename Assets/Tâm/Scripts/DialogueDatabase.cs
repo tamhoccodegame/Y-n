@@ -293,11 +293,74 @@ public class DialogueDatabase : MonoBehaviour
 				new DialogueLine()
 				{
 					speaker = "Yên",
-					sentence = "Trông cô ấy có vẻ ổn hơn rồi...",
+					sentence = "Trông cô ấy có vẻ ổn hơn rồi... Mình phải đi tìm thêm thuốc thôi",
 				}
 			}
 		},
-	};
+
+		new Dialogue()
+		{
+			name = "EndDemo",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Không ngờ tên cá sấu ấy mạnh như vậy...",
+				},
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Mà vừa nãy là sao vậy nhỉ? Sao hắn lại bỏ đi?...",
+				},
+				new DialogueLine()
+				{
+					speaker = "Người lạ",
+					sentence = "Trông người tệ quá đấy. Vừa chạm trán với CÁ SẤU TINH đúng không?",
+				},
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Ai đó!?",
+				},
+				new DialogueLine()
+				{
+					speaker = "Linh Quy",
+					sentence = "Ta là Linh Quy, con rùa duy nhất ở cái đầm lầy này nè.",
+				},
+				new DialogueLine()
+				{
+					speaker = "Linh Quy",
+					sentence = "Từ trước đến nay, chưa ai có thể đánh bại được con cá sấu ấy vì hắn quá mạnh. Nhưng ta biết hắn có một điểm yếu",
+				},
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Điểm yếu đó là gì vậy ạ?",
+				},
+				new DialogueLine()
+				{
+					speaker = "Linh Quy",
+					sentence = "Hắn ta rất thích xem hát bội...",
+				}
+			},
+			hasChoice = false,
+			onCompleted = () => GameManager.instance.LoadScene("EndOfDemo")
+		},
+
+		new Dialogue()
+		{
+			name = "GapThaiPhu",
+			lines = new List<DialogueLine>()
+			{
+				new DialogueLine()
+				{
+					speaker = "Yên",
+					sentence = "Chẳng phải cô này sắp sinh rồi sao? Mình phải kiếm thảo mộc gần đây để giúp cô giảm đau.",
+				}
+			}
+		}
+	};	
 
     
     public Dialogue GetDialogue(string dialogueName)

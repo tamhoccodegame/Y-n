@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Scene_Main/StartScene.unity
+    guid: fba687e954c43de408026f92dd2105cb
+  - enabled: 1
     path: Assets/Scenes/Scene_Main/OpeningCutscene.unity
     guid: acfe2781f0725cb40b2edfd98e00e4a0
   - enabled: 1
@@ -17,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene_Main/Scene_3.unity
     guid: bf139a5060f83b349bce05ff4729e9a1
+  - enabled: 1
+    path: Assets/Scenes/Scene_Main/Scene_4.unity
+    guid: 9b6b9a80a3508a84ca2104c16a92dfe2
+  - enabled: 1
+    path: Assets/Scenes/Scene_Main/EndOfDemo.unity
+    guid: 2a7776c9d551bbf46b94e95387cc2bbf
   - enabled: 1
     path: Assets/Scenes/MNG/MNG_PhaCheNuoc.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02

@@ -41,7 +41,7 @@ public class PlayerStateManager : MonoBehaviour
         PlayerState = idleState;
         PlayerState.EnterState(this);
 		
-		if(GameManager.instance.hasSavedState)
+		if(GameManager.instance.hasSavedState && GameManager.instance.isLoadPrevious)
 		{
 			transform.position = GameManager.instance.playerPosition;
 		}

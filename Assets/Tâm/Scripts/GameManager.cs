@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 	public string previousSceneName;
 	public bool hasSavedState = false;
 
-	private bool isLoadingScene = false;
+	public bool isLoadPrevious = false;
 	// Start is called before the first frame update
 	void Awake()
 	{
@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
 		yield return StartCoroutine(Fade(1));
 		SceneManager.LoadScene(sceneName);
 		yield return StartCoroutine(Fade(0));
+		isLoadPrevious = false;
 	}
 
 	private IEnumerator Fade(float targetAlpha)
@@ -218,6 +219,7 @@ public class GameManager : MonoBehaviour
 
 	public void LoadPreviousScene()
 	{
+		isLoadPrevious = true;
 		StopAllCoroutines();
 		StartCoroutine(FadeOutIn(previousSceneName));
 		uiManager.gameObject.SetActive(true);

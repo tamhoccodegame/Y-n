@@ -6,8 +6,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
 	public Transform spawnPoint;
-	public int enemyToSpawn = 5;
-	public int enemyHasSpawned = 0;
 	public List<GameObject> enemySpawned = new List<GameObject>(); // Khởi tạo danh sách
 
 	void Update()

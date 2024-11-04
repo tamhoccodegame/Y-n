@@ -12,7 +12,7 @@ public class UIDiaryTab : MonoBehaviour
 	public GameObject detailContainer; // Container cho chi tiết nhật ký, như hình ảnh và nội dung
 	public Image diaryImage;
 	public Text diaryName;
-	public Text diaryLines;
+	public Text diary;
 
 	public List<Button> buttonList;
 	private int currentButtonIndex;
@@ -23,7 +23,6 @@ public class UIDiaryTab : MonoBehaviour
 	private void Start()
 	{
 		detailContainer.SetActive(false);
-
 		if (buttonList.Count > 0)
 		{
 			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
@@ -62,21 +61,18 @@ public class UIDiaryTab : MonoBehaviour
 			Button newButton = Instantiate(buttonTemplate, listContainer);
 			newButton.gameObject.SetActive(true);
 			buttonList.Add(newButton);
-			detailContainer.SetActive(true); // Hiển thị phần chi tiết
-			diaryImage.sprite = d.diaryPicture;
-			diaryName.text = d.diaryName;
-			diaryLines.text = d.diaryLines;
 		}
 
 		// Đặt nút đầu tiên được chọn nếu có ít nhất một nhật ký
 		if (buttonList.Count > 0)
 		{
 			currentButtonIndex = 0;
-			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
+			DisplayCostumeDetails(unlockedDiaryList[currentButtonIndex]);
+			EventSystem.current.SetSelectedGameObject(buttonList[0].gameObject);
 		}
 
 		// Cập nhật hiển thị danh sách nhật ký
-		UpdateDiaryListDisplay();
+		UpdateCostumeListDisplay();
 	}
 
 
@@ -88,16 +84,20 @@ public class UIDiaryTab : MonoBehaviour
 		if (newIndex >= 0 && newIndex < unlockedDiaryList.Count)
 		{
 			currentButtonIndex = newIndex;
+			DisplayCostumeDetails(unlockedDiaryList[currentButtonIndex]);
+
 			// Nếu đang ở giới hạn trên hoặc dưới, cuộn danh sách
 			if (currentButtonIndex >= visibleEntries || newIndex < currentButtonIndex - visibleEntries + 1)
 			{
-				UpdateDiaryListDisplay();
+				UpdateCostumeListDisplay();
 			}
+
+			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
 		}
 	}
 
 
-	private void UpdateDiaryListDisplay()
+	private void UpdateCostumeListDisplay()
 	{
 		// Xóa các nút cũ
 		foreach (Transform child in listContainer)
@@ -115,23 +115,35 @@ public class UIDiaryTab : MonoBehaviour
 		{
 			Diary diary = unlockedDiaryList[i];
 			Button newButton = Instantiate(buttonTemplate, listContainer);
+			newButton.GetComponentInChildren<Text>().text = diary.diaryName; // Gán tên trang phục cho nút
 			newButton.gameObject.SetActive(true);
 			buttonList.Add(newButton);
 
 			// Đăng ký sự kiện cho nút để hiển thị chi tiết khi nhấn
 			int index = i; // Lưu chỉ số để tránh vấn đề closure
+			newButton.onClick.AddListener(() => DisplayCostumeDetails(unlockedDiaryList[index]));
 		}
 
 		// Nếu có nút, chọn nút đầu tiên và hiển thị chi tiết
 		if (buttonList.Count > 0)
 		{
 			EventSystem.current.SetSelectedGameObject(buttonList[0].gameObject);
+			DisplayCostumeDetails(unlockedDiaryList[currentButtonIndex]);
 		}
 	}
 
 	public void UpdateNotify(Text text)
 	{
-		text.text = "Bạn đã mở khoá một nhật ký mới, [P] để xem";
+		text.text = "Bạn mở khoá được một trang phục mới, [P] để xem";
 	}
+
+	public void DisplayCostumeDetails(Diary diary)
+	{
+		detailContainer.SetActive(true); // Hiển thị phần chi tiết
+		diaryImage.sprite = diary.diaryPicture;
+		diaryName.text = diary.diaryName;
+		this.diary.text = diary.diaryLines;
+	}
+
 
 }

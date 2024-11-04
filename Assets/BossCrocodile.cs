@@ -1,140 +1,154 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class BossCrocodile : MonoBehaviour
 {
-	public float moveSpeed = 3f;
-	public float chaseSpeed = 5f;
-	public float attackRange = 1.5f;
-	public float patrolRange = 5f;
-	public float minDistanceFromPlayerForBubble = 5f;
-	public int minAttackCount = 1;
-	public int maxAttackCount = 3;
-	public GameObject bubblePrefab;
-	public Transform bubbleSpawnPoint;
-	public float attackInterval = 2f;
+	[SerializeField] private GameObject effectPrefabs;
+	[SerializeField] private GameObject rockPrefabs;
+	public Transform effectPoint;
 
-	private Vector2 initialPosition;
-	private bool movingRight = true;
-	private Animator animator;
-	private GameObject player;
-	private Rigidbody2D rb;
+	private int currentComboStrikes;
 
-	void Start()
+	private int speed = 25;
+	private int countTouchWall = 0;
+	private int countChasePlayer = 0;
+	private float attackRange = 5f;
+	private bool isRage = false;
+
+	[SerializeField] private float maxHealth;
+	private float currentHealth;
+	public Slider healthBar_slider;
+	private bool isCoroutineRunning = false;
+
+	Transform player;
+	Rigidbody2D rb;
+	Animator animator;
+	Vector2 direction;
+
+	public void Awake()
 	{
-		initialPosition = transform.position;
-		animator = GetComponent<Animator>();
-		player = GameObject.FindWithTag("Player");
+		player = GameObject.Find("Player").transform;
 		rb = GetComponent<Rigidbody2D>();
-		rb.gravityScale = 0; // Đảm bảo đứng trên mặt phẳng
-		rb.freezeRotation = true;
-		StartCoroutine(BossRoutine());
+		animator = GetComponent<Animator>();
+		//currentComboStrikes = Random.Range(1, 4);
+		currentComboStrikes = 1;
+		direction = Vector2.right;
 	}
 
-	IEnumerator BossRoutine()
+	private void Start()
 	{
-		while (true)
+		direction = direction = new Vector3(player.position.x - transform.position.x, 0, 0);
+	}
+	public void Update()
+	{
+		if (isCoroutineRunning) return;
+
+		isCoroutineRunning = true;
+		StartCoroutine("Combo" + currentComboStrikes);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.CompareTag("Wall"))
 		{
-			// Di chuyển qua lại
-			yield return StartCoroutine(Patrol());
+			direction.Normalize();
+			direction.x *= -1;
+			transform.localScale = new Vector3(direction.x * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
 
-			// Đuổi và tấn công người chơi
-			yield return StartCoroutine(ChaseAndAttack());
-
-			// Tấn công bằng Bubble
-			yield return StartCoroutine(BlowBubble());
-
-			yield return new WaitForSeconds(attackInterval);
+			isCoroutineRunning = false;
 		}
 	}
 
-	IEnumerator Patrol()
+	private void RandomComboStrike()
 	{
-		while (Vector2.Distance(new Vector2(transform.position.x, 0), new Vector2(initialPosition.x, 0)) < patrolRange)
-		{
-			Move();
-			yield return null;
-		}
+		currentComboStrikes = Random.Range(1, 4);
 	}
 
-	void Move()
+	//Running left and right agressively
+	private IEnumerator Combo1()
 	{
-		animator.Play("Walk"); // Play animation di chuyển
-		float moveDirection = movingRight ? 1 : -1;
-		rb.velocity = new Vector2(moveSpeed * moveDirection, rb.velocity.y);
+		if (countTouchWall < 4)
+		{
+			direction.Normalize();
+			animator.Play("CST_Walk");
+			rb.velocity = new Vector3(speed * direction.x, 0, 0);
+		}
+		else
+		{
+			animator.Play("CST_Idle");
+			rb.velocity = Vector2.zero;
+			yield return new WaitForSeconds(2f);
+			RandomComboStrike();
+			yield return new WaitForSeconds(.5f);
+			Debug.Log("Combo1 done, wait for random currentComboStrike");
+			countTouchWall = 0;
+			isCoroutineRunning = false;
+		}
 
-		if (movingRight && transform.position.x >= initialPosition.x + patrolRange)
-		{
-			movingRight = false;
-			Flip();
-		}
-		else if (!movingRight && transform.position.x <= initialPosition.x - patrolRange)
-		{
-			movingRight = true;
-			Flip();
-		}
 	}
 
-	IEnumerator ChaseAndAttack()
-	{
-		int attackCount = Random.Range(minAttackCount, maxAttackCount + 1);
-		animator.Play("Run");
 
-		for (int i = 0; i < attackCount; i++)
+	public void Chase()
+	{
+		animator.Play("Move");
+		rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+
+	}
+
+
+	//Chase Player and Attack
+	private IEnumerator Combo2()
+	{
+		if (countChasePlayer < 4)
 		{
-			// Đuổi theo người chơi chỉ theo trục X
-			while (Mathf.Abs(transform.position.x - player.transform.position.x) > attackRange)
+			if (Mathf.Abs(player.position.x - transform.position.x) <= attackRange)
 			{
-				Vector2 direction = new Vector2(Mathf.Sign(player.transform.position.x - transform.position.x), 0);
-				rb.velocity = new Vector2(chaseSpeed * direction.x, rb.velocity.y);
-				FacePlayer();
-				yield return null;
+				countChasePlayer++;
+				rb.velocity = Vector2.zero;
+				animator.Play("CST_Attack");
+				yield return new WaitForSeconds(.5f);
+				animator.Play("CST_Idle");
+				yield return new WaitForSeconds(1f);
+				isCoroutineRunning = false;
+			}
+			else
+			{
+				Chase();
+				isCoroutineRunning = false;
 			}
 
-			// Tấn công người chơi
-			rb.velocity = Vector2.zero; // Dừng lại để tấn công
-			animator.Play("Attack"); // Play chém animation
-			yield return new WaitForSeconds(0.5f); // Đợi animation hoàn thành
 		}
-	}
-
-	IEnumerator BlowBubble()
-	{
-		// Di chuyển ra xa khỏi người chơi nếu quá gần
-		if (Mathf.Abs(transform.position.x - player.transform.position.x) < minDistanceFromPlayerForBubble)
+		else
 		{
-			Vector2 direction = new Vector2(Mathf.Sign(transform.position.x - player.transform.position.x), 0);
-			float moveDistance = minDistanceFromPlayerForBubble - Mathf.Abs(transform.position.x - player.transform.position.x);
-
-			while (moveDistance > 0)
-			{
-				float moveStep = Mathf.Min(moveSpeed * Time.deltaTime, moveDistance);
-				rb.velocity = new Vector2(moveSpeed * direction.x, rb.velocity.y);
-				moveDistance -= moveStep;
-				yield return null;
-			}
+			animator.Play("CST_Idle");
+			rb.velocity = Vector2.zero;
+			yield return new WaitForSeconds(1f);
+			RandomComboStrike();
+			yield return new WaitForSeconds(.5f);
+			countChasePlayer = 0;
+			isCoroutineRunning = false;
 		}
 
-		// Quay mặt về phía người chơi và thổi bong bóng
-		FacePlayer();
-		animator.Play("Attack_Bubble");
-		yield return new WaitForSeconds(0.5f); // Đợi animation bắt đầu
-		Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity);
-		yield return new WaitForSeconds(1f); // Đợi animation hoàn thành
 	}
 
-	void FacePlayer()
+	//CastSkill Thunder
+	private IEnumerator Combo3()
 	{
-		Vector3 scale = transform.localScale;
-		scale.x = (player.transform.position.x > transform.position.x) ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
-		transform.localScale = scale;
+		yield return null;
 	}
 
-	void Flip()
+	public  void TakeDamage(float damage)
 	{
-		Vector3 scale = transform.localScale;
-		scale.x *= -1;
-		transform.localScale = scale;
+
 	}
+
+
+	public bool Die()
+	{
+		return false;
+	}
+
 }

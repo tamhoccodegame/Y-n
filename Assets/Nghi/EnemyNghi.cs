@@ -36,7 +36,7 @@ public class EnemyNghi : MonoBehaviour
         animator = GetComponent<Animator>();
         startingPosition = transform.position;
         currentState = State.Patrolling;
-        maxHealth = currentHealth;
+        currentHealth = maxHealth;
     }
 
     void Update()

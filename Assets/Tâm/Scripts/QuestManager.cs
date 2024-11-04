@@ -14,14 +14,14 @@ public class QuestManager : MonoBehaviour
 	{
 		// Khởi động với các nhiệm vụ đầu tiên
 		//ActivateQuest("1_1");
-		foreach(GameObject start in triggerStartQuests)
-		{
-			start.SetActive(false);
-		}
-		foreach(GameObject end in triggerEndQuests)
-		{
-			end.SetActive(false);
-		}
+		//foreach(GameObject start in triggerStartQuests)
+		//{
+		//	start.SetActive(false);
+		//}
+		//foreach(GameObject end in triggerEndQuests)
+		//{
+		//	end.SetActive(false);
+		//}
 		triggerStartQuests[0].SetActive(true);
 	}
 

@@ -30,6 +30,7 @@ public class DutchCatcher : MonoBehaviour
 	private int previousIndex = 0;
 	private int currentKeyIndex = 0;
 	private bool isReceivedinput = false;
+	private bool isEnd = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -52,9 +53,11 @@ public class DutchCatcher : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (isEnd) return;
 		timeLeft -= Time.deltaTime;
-		if (timeLeft < 0)
+		if (timeLeft < 0 && !isEnd)
 		{
+			StopAllCoroutines();
 			EndGame(false);
 		}
 
@@ -180,7 +183,8 @@ public class DutchCatcher : MonoBehaviour
 
 	void EndGame(bool isWin)
 	{
-		StopAllCoroutines();
+		isEnd = true;
+		Debug.Log("Endgame");
 		if (!isWin)
 		{
 			Debug.Log("Mày ngu! Mày ngu! Mày ngu");

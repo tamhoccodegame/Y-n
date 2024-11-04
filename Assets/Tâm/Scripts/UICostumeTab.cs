@@ -22,6 +22,7 @@ public class UICostumeTab : MonoBehaviour
 
 	private void Start()
 	{
+		detailContainer.SetActive(false);
 		if (buttonList.Count > 0)
 		{
 			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);
@@ -138,7 +139,7 @@ public class UICostumeTab : MonoBehaviour
 
 	public void DisplayCostumeDetails(Costume costume)
 	{
-		//detailContainer.SetActive(true); // Hiển thị phần chi tiết
+		detailContainer.SetActive(true); // Hiển thị phần chi tiết
 		costumeImage.sprite = costume.costumeSprite;
 		costumeName.text = costume.costumeName;
 		costumeInform.text = costume.costumerInform;	

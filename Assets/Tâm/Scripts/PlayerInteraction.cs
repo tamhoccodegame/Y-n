@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-	public float interactionRange = 1f; // Khoảng cách tương tác
 	public Transform holdingPoint;
 
 	private ITriggerable currentTriggerable;
@@ -22,17 +21,20 @@ public class PlayerInteraction : MonoBehaviour
 		if (triggerable != null)
 		{
 			currentTriggerable = triggerable;
-			Debug.Log(triggerable.GetTriggerType().ToString());
-			if(triggerable.GetTriggerType() == TriggerType.Optional)
+
+			if (triggerable.GetTriggerType() == TriggerType.Auto)
 			{
-				triggerable.ShowPrompt();
-			}
-			else if(triggerable.GetTriggerType() == TriggerType.Auto) 
-			{
+				Debug.Log("Auto trigger activated");
 				triggerable.OnInteract(this);
+			}
+			else if (triggerable.GetTriggerType() == TriggerType.Optional)
+			{
+				Debug.Log("Optional trigger prompt shown");
+				triggerable.ShowPrompt();
 			}
 		}
 	}
+
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{

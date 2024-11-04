@@ -51,8 +51,8 @@ public class SpawnObjectMachine : MonoBehaviour
         Vector3 spawnPosition = new Vector3(transform.position.x, Random.Range(topPosition.position.y, bottomPosition.position.y), 0);
 
         Rigidbody2D obstacle = Instantiate(obstaclePrefab[obstacleIndex], spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
-
-        obstacle.velocity = new Vector2(-40, 0);
+        obstacle.gameObject.transform.rotation = obstaclePrefab[obstacleIndex].transform.rotation;
+        obstacle.velocity = new Vector2(-30, 0);
 
         Destroy(obstacle.gameObject, 3f);
     }

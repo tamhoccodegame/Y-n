@@ -22,6 +22,8 @@ public class UIDiaryTab : MonoBehaviour
 
 	private void Start()
 	{
+		detailContainer.SetActive(false);
+
 		if (buttonList.Count > 0)
 		{
 			EventSystem.current.SetSelectedGameObject(buttonList[currentButtonIndex].gameObject);

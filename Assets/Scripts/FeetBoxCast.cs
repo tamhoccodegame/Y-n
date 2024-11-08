@@ -9,6 +9,7 @@ public class FeetBoxCast : MonoBehaviour
 	private void OnTriggerStay2D(Collider2D collision)
 	{
 		player.isGrounded = true;
+		Debug.Log(collision.name);
         //animator.SetBool("isJumping", false);
     }
 

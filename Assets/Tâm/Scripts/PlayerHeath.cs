@@ -37,9 +37,9 @@ public class PlayerHeath : MonoBehaviour
 
     }
 
-    private void Die()
+    public void Die()
     {
-        GameManager.instance.GameOver();
+        GameManager.instance.LoadPreviousScene();
     }
 
 	private void OnDestroy()

@@ -42,6 +42,8 @@ public class GroundSwitcher : MonoBehaviour
     {
 		if (!isPlayerInZone) return;
 
+		Debug.Log(player.name);
+
 		if (Input.GetKeyDown(KeyCode.W) && !isPlayerInBackground)
 		{
 			if (move != null) StopCoroutine(move);

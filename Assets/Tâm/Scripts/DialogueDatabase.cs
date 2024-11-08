@@ -211,8 +211,8 @@ public class DialogueDatabase : MonoBehaviour
 				noText = "Thôi mình cũng hơi mệt rồi...",
 				onYes = () =>
 				{
-                    //GameManager.instance.LoadScene("MNG_Phachenuoc");
-                    Debug.Log("Yes yes yes!");
+					GameManager.instance.LoadScene("MNG_CaKheo");
+					Debug.Log("Yes yes yes!");
 				},
 				onNo = () =>
 				{

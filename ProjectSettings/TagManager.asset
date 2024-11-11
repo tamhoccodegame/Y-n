@@ -9,6 +9,7 @@ TagManager:
   - BurningHouse
   - Limit
   - Woman
+  - Wall
   layers:
   - Default
   - TransparentFX

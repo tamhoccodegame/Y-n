@@ -75,7 +75,7 @@ public class PlayerStateManager : MonoBehaviour
 
 	public void PlayFootStep()
 	{
-		int randomValue = Random.Range(1, 5);
+		int randomValue = Random.Range(1, 4);
 		GameManager.instance.PlayAudio($"Footstep{randomValue}");
 	}
 

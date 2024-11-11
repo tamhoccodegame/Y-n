@@ -43,7 +43,8 @@ public class UIManager : MonoBehaviour
 	public bool isDiaryUnlocked = false;
 	public bool isCostumeUnlocked = false;
 
-
+	[Header("==========SkillPoint==========")]
+	public Text skillPoint;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -68,6 +69,10 @@ public class UIManager : MonoBehaviour
         
     }
 
+	public void UpdateSkillPoint(int skillPoint)
+	{
+		this.skillPoint.text = skillPoint.ToString();
+	}
     public void StartDialogue(Dialogue dialogue)
     {
 		GameManager.instance.SetIsControllable(false);

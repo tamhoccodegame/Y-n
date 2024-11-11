@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 	public Image fadeImage;
 	public float fadeDuration;
 
+	public int skillPoint = 0;
+
 	public Vector3 playerPosition;
 	public int playerHearts;
 	public string previousSceneName;
@@ -92,6 +94,18 @@ public class GameManager : MonoBehaviour
 	public void StopAllAudio()
 	{
 		audioManager.StopAllAudio();
+	}
+
+	public void AddSkillPoint(int ammount)
+	{
+		skillPoint += ammount;
+		uiManager.UpdateSkillPoint(skillPoint);
+	}
+
+	public  void RemoveSkillPoint(int ammount)
+	{
+		skillPoint -= ammount;
+		uiManager.UpdateSkillPoint(skillPoint);
 	}
 
 	public List<Diary> GetUnlockedDiary()

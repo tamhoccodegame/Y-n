@@ -6,149 +6,171 @@ using UnityEngine.UI;
 
 public class BossCrocodile : MonoBehaviour
 {
-	[SerializeField] private GameObject effectPrefabs;
-	[SerializeField] private GameObject rockPrefabs;
-	public Transform effectPoint;
+	public float speed;
+	public int maxHealth;
+	private int currentHealth;
+	private Transform player;
 
-	private int currentComboStrikes;
-
-	private int speed = 25;
-	private int countTouchWall = 0;
-	private int countChasePlayer = 0;
-	private float attackRange = 5f;
-	private bool isRage = false;
-
-	[SerializeField] private float maxHealth;
-	private float currentHealth;
-	public Slider healthBar_slider;
-	private bool isCoroutineRunning = false;
-
-	Transform player;
-	Rigidbody2D rb;
 	Animator animator;
-	Vector2 direction;
+	Rigidbody2D rb;
 
-	public void Awake()
+	private bool isCoroutineRunnning = false;
+	private int currentSequenceIndex = -1;
+	private int currentCountTouchWall;
+
+	public float attackRange;
+
+	[Header("======SkillSpawnPoint======")]
+	public Transform waveSlashPoint;
+	public Transform bubblePoint;
+
+	[Header("======SkillPrefabs======")]
+	public GameObject waveSlashPrefab;
+	public GameObject bubblePrefab;
+
+	private void OnEnable()
 	{
 		player = GameObject.Find("Player").transform;
-		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-		//currentComboStrikes = Random.Range(1, 4);
-		currentComboStrikes = 1;
-		direction = Vector2.right;
+		rb = GetComponent<Rigidbody2D>();
 	}
 
-	private void Start()
+	private void Update()
 	{
-		direction = direction = new Vector3(player.position.x - transform.position.x, 0, 0);
+		Debug.Log(currentSequenceIndex);
+		if (isCoroutineRunnning) return;
+		RandomSequence();
+		isCoroutineRunnning = true;
+		StartCoroutine($"Sequence_{currentSequenceIndex}");
 	}
-	public void Update()
-	{
-		if (isCoroutineRunning) return;
 
-		isCoroutineRunning = true;
-		StartCoroutine("Combo" + currentComboStrikes);
+	void RandomSequence()
+	{
+		//currentSequenceIndex = Random.Range(1,4);
+		currentSequenceIndex = 3;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Wall"))
 		{
-			direction.Normalize();
-			direction.x *= -1;
-			transform.localScale = new Vector3(direction.x * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-
-			isCoroutineRunning = false;
+			speed = -speed;
+			currentCountTouchWall++;
 		}
 	}
 
-	private void RandomComboStrike()
+	float DistanceFromTarget(Transform target)
 	{
-		currentComboStrikes = Random.Range(1, 4);
+		return Mathf.Abs(transform.position.x - target.position.x);
 	}
 
-	//Running left and right agressively
-	private IEnumerator Combo1()
+	void LookAtTarget(Transform target)
 	{
-		if (countTouchWall < 4)
+		Vector3 currentLocalScale = transform.localScale;
+		float direction = target.position.x - transform.position.x;
+
+		currentLocalScale.x = Mathf.Sign(direction) * Mathf.Abs(transform.localScale.x);
+		transform.localScale = currentLocalScale;
+	}
+
+	void LookAtTarget(float targetDirection)
+	{
+		Vector3 currentLocalScale = transform.localScale;
+		currentLocalScale.x = Mathf.Sign(targetDirection) * Mathf.Abs(transform.localScale.x);
+		transform.localScale = currentLocalScale;
+	}
+
+	void Move()
+	{
+		animator.Play("CST_Walk");
+		rb.velocity = new Vector2(speed, 0);
+		LookAtTarget(speed);
+	}
+
+	//Chạy 2 bên chọc tức
+	IEnumerator Sequence_1()
+	{
+		int countTouchWall = Random.Range(1, 4);
+		currentCountTouchWall = 0;
+
+		while(currentCountTouchWall < countTouchWall)
 		{
-			direction.Normalize();
-			animator.Play("CST_Walk");
-			rb.velocity = new Vector3(speed * direction.x, 0, 0);
+			Move();
+			yield return null;
 		}
-		else
-		{
-			animator.Play("CST_Idle");
-			rb.velocity = Vector2.zero;
-			yield return new WaitForSeconds(2f);
-			RandomComboStrike();
-			yield return new WaitForSeconds(.5f);
-			Debug.Log("Combo1 done, wait for random currentComboStrike");
-			countTouchWall = 0;
-			isCoroutineRunning = false;
-		}
+
+		isCoroutineRunnning = false;
 
 	}
 
-
-	public void Chase()
+	public void SpawnWaveSlash()
 	{
-		animator.Play("Move");
-		rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+		Vector2 playerPosition = player.position;
+		
+		Rigidbody2D rb = Instantiate(waveSlashPrefab, waveSlashPoint.position, Quaternion.identity, waveSlashPoint).GetComponent<Rigidbody2D>();
+		Vector2 direction = (playerPosition - (Vector2)waveSlashPoint.position).normalized;
 
+		// Tăng tốc độ của bong bóng với vận tốc ban đầu và áp dụng lực
+		float initialSpeed = 20f;  // Tốc độ ban đầu có thể thay đổi tùy nhu cầu
+		Vector2 initialVelocity = new Vector2(direction.x * initialSpeed, direction.y * initialSpeed + 20f); // Cộng thêm độ cong hướng lên
+
+		rb.velocity = initialVelocity;
+
+		// Bật trọng lực để bong bóng sẽ rơi xuống sau khi đạt đỉnh
+		rb.gravityScale = 3.0f;  
 	}
-
-
-	//Chase Player and Attack
-	private IEnumerator Combo2()
+	//Chém sóng xung kích
+	IEnumerator Sequence_2()
 	{
-		if (countChasePlayer < 4)
+		while (DistanceFromTarget(player) < attackRange)
 		{
-			if (Mathf.Abs(player.position.x - transform.position.x) <= attackRange)
-			{
-				countChasePlayer++;
-				rb.velocity = Vector2.zero;
-				animator.Play("CST_Attack");
-				yield return new WaitForSeconds(.5f);
-				animator.Play("CST_Idle");
-				yield return new WaitForSeconds(1f);
-				isCoroutineRunning = false;
-			}
-			else
-			{
-				Chase();
-				isCoroutineRunning = false;
-			}
-
+			Move();
+			yield return null;
 		}
-		else
+
+		rb.velocity = Vector2.zero;
+
+		for(int i = 0; i < 4; i++)
 		{
-			animator.Play("CST_Idle");
-			rb.velocity = Vector2.zero;
+			LookAtTarget(player);
+			animator.Play("CST_Attack");
+			//Chờ play anim attack
 			yield return new WaitForSeconds(1f);
-			RandomComboStrike();
-			yield return new WaitForSeconds(.5f);
-			countChasePlayer = 0;
-			isCoroutineRunning = false;
+			animator.Play("CST_Idle");
+			yield return new WaitForSeconds(2f);
 		}
 
+		isCoroutineRunnning = false;
 	}
 
-	//CastSkill Thunder
-	private IEnumerator Combo3()
+	public void SpawnBubble()
 	{
-		yield return null;
+		Rigidbody2D rb = Instantiate(bubblePrefab, bubblePoint.position, Quaternion.identity, bubblePoint).GetComponent<Rigidbody2D>();
+		float direction = Mathf.Sign(player.position.x - transform.position.x);
+		Debug.Log(direction);
+		float randomScaleValue = Random.Range(2, 4);
+		rb.gameObject.transform.localScale = new Vector3(randomScaleValue, randomScaleValue, 0);
+		rb.velocity = new Vector2(Random.Range(5,11) * direction, Random.Range(3,8));
 	}
 
-	public  void TakeDamage(float damage)
+	//Thổi bong bóng
+	IEnumerator Sequence_3()
 	{
+		while (DistanceFromTarget(player) < attackRange)
+		{
+			Move();
+			yield return null;
+		}
+		rb.velocity = Vector2.zero;
+		LookAtTarget(player);
 
-	}
+		animator.Play("CST_ThoiBong");
+		yield return new WaitForSeconds(4f);
+		animator.Play("CST_Idle");
+		yield return new WaitForSeconds(4f);
 
+		isCoroutineRunnning = false;
 
-	public bool Die()
-	{
-		return false;
 	}
 
 }

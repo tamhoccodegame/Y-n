@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GroundSwitcher : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GroundSwitcher : MonoBehaviour
 	public PolygonCollider2D middleGroundLimitCam;
 	public PolygonCollider2D backGroundLimitCam;
 
-    public SpriteRenderer playerOrderLayer;
+    public SortingGroup playerOrderLayer;
 	public string playerMiddleGroundLayer;
 	public string playerBackGroundLayer;
 	public CinemachineVirtualCamera virtualCamera;

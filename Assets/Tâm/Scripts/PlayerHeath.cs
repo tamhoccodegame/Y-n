@@ -6,7 +6,9 @@ public class PlayerHeath : MonoBehaviour
 {
     public int maxHearts;
     public int currentHearts;
-
+    public GameObject hitEffect;
+    private bool isVulnerable = true;
+    public float vulnerableCooldown;
 	private void Start()
 	{
         currentHearts = GameManager.instance.playerHearts;
@@ -25,17 +27,42 @@ public class PlayerHeath : MonoBehaviour
 	[ContextMenu("Substract Health")]
 	public void TakeDamage()
     {
+        if (!isVulnerable) return;
+        StartCoroutine(TakeDamageCoroutine());
+        
+
+    }
+
+    IEnumerator TakeDamageCoroutine()
+    {
         currentHearts--;
         currentHearts = Mathf.Max(currentHearts, 0);
         GetComponent<SimpleFlash>().Flash();
         GameManager.instance.UpdateHealthUI(currentHearts);
         HitStop.instance.Stop();
-        if(currentHearts <= 0)
+        Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+        if (currentHearts <= 0)
         {
             Die();
         }
 
-    }
+        isVulnerable = false;
+
+        float vulnerableTimer = vulnerableCooldown;
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+
+        while (vulnerableTimer > 0)
+        {
+            renderer.enabled = !renderer.enabled;
+
+            yield return new WaitForSeconds(0.1f);
+
+			vulnerableTimer -= 0.1f;
+		}
+    
+        renderer.enabled = true;
+        isVulnerable = true;
+	}
 
     public void Die()
     {

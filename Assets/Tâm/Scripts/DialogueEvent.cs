@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+#nullable enable
 
 public class DialogueEvent : MonoBehaviour, ITriggerable
 {
@@ -10,14 +10,14 @@ public class DialogueEvent : MonoBehaviour, ITriggerable
     public string dialogueName;
 	public bool isOTPDialouge;
 
-	public GameObject interactPrompt;
+	public GameObject? interactPrompt;
 	public UnityEvent onDialogueCompleted;
 
 	public TriggerType GetTriggerType() => (isFirstTrigger || isOTPDialouge) ? TriggerType.Auto : TriggerType.Optional;
 
 	public void HidePrompt()
 	{
-		interactPrompt.SetActive(false);
+		interactPrompt?.SetActive(false);
 	}
 
 	public void OnInteract(PlayerInteraction playerInteration)
@@ -29,13 +29,13 @@ public class DialogueEvent : MonoBehaviour, ITriggerable
 
 	public void ShowPrompt()
 	{
-		interactPrompt.SetActive(true);
+		interactPrompt?.SetActive(true);
 	}
 
 	// Start is called before the first frame update
 	void Start()
     {
-		interactPrompt.SetActive(false);
+		interactPrompt?.SetActive(false);
     }
 
     // Update is called once per frame

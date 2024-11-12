@@ -29,6 +29,8 @@ public class EnemyNghi : MonoBehaviour
     private bool isAttacking = false;
     private bool isFacingRight = true; // Biến lưu trạng thái hướng
 
+    public GameObject hitImpactEffect;
+
     void Start()
     {
         player = GameObject.Find("Player").transform;
@@ -65,6 +67,7 @@ public class EnemyNghi : MonoBehaviour
         GetComponent<SimpleFlash>().Flash();
         currentHealth--;
         currentHealth = Mathf.Max(currentHealth, 0);
+        Instantiate(hitImpactEffect, transform.position, Quaternion.identity, transform);
         if(currentHealth == 0)
         {
             Die();

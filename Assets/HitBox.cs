@@ -8,6 +8,7 @@ public class HitBox : MonoBehaviour
 	{
 		PlayerHeath playerHeath = collision.GetComponent<PlayerHeath>();
 		EnemyNghi enemy = collision.GetComponent<EnemyNghi>();
+		BossCrocodile boss = collision.GetComponent<BossCrocodile>();
 
 		if (playerHeath)
 		{
@@ -17,6 +18,11 @@ public class HitBox : MonoBehaviour
 		if (enemy)
 		{
 			enemy.TakeDamge();
+		}
+
+		if (boss)
+		{
+			boss.TakeDamage();
 		}
 	}
 }

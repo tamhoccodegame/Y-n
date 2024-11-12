@@ -25,7 +25,7 @@ public class CaKheo : MonoBehaviour
 
 	private void Start()
 	{
-		GameManager.instance.HideUI();
+		//GameManager.instance.HideUI();
 
 		if (!isAI)
 		{
@@ -101,7 +101,7 @@ public class CaKheo : MonoBehaviour
 
 	private void ShowNextKey()
 	{
-		qteText.text = "Press " + currentKeys[currentKeyIndex];
+		qteText.text = "Nhấn " + currentKeys[currentKeyIndex];
 	}
 
 	private void MovePlayer()

@@ -33,6 +33,7 @@ public class BossCrocodile : MonoBehaviour
 		player = GameObject.Find("Player").transform;
 		animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody2D>();
+		currentHealth = maxHealth;
 	}
 
 	private void Update()
@@ -46,13 +47,13 @@ public class BossCrocodile : MonoBehaviour
 
 	void RandomSequence()
 	{
-		//currentSequenceIndex = Random.Range(1,4);
-		currentSequenceIndex = 3;
+		currentSequenceIndex = Random.Range(1, 4);
+		//currentSequenceIndex = 1;
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.CompareTag("Wall"))
+		if (collision.gameObject.tag == "Wall")
 		{
 			speed = -speed;
 			currentCountTouchWall++;
@@ -90,10 +91,10 @@ public class BossCrocodile : MonoBehaviour
 	//Chạy 2 bên chọc tức
 	IEnumerator Sequence_1()
 	{
-		int countTouchWall = Random.Range(1, 4);
+		int countTouchWall = Random.Range(1, 3);
 		currentCountTouchWall = 0;
-
-		while(currentCountTouchWall < countTouchWall)
+		GetComponentInChildren<AudioSource>().Play();
+		while (currentCountTouchWall < countTouchWall)
 		{
 			Move();
 			yield return null;
@@ -111,13 +112,12 @@ public class BossCrocodile : MonoBehaviour
 		Vector2 direction = (playerPosition - (Vector2)waveSlashPoint.position).normalized;
 
 		// Tăng tốc độ của bong bóng với vận tốc ban đầu và áp dụng lực
-		float initialSpeed = 20f;  // Tốc độ ban đầu có thể thay đổi tùy nhu cầu
-		Vector2 initialVelocity = new Vector2(direction.x * initialSpeed, direction.y * initialSpeed + 20f); // Cộng thêm độ cong hướng lên
+		float initialSpeed = 10f;  // Tốc độ ban đầu có thể thay đổi tùy nhu cầu
+		Vector2 initialVelocity = new Vector2(direction.x * initialSpeed, 0); // Cộng thêm độ cong hướng lên
 
 		rb.velocity = initialVelocity;
 
-		// Bật trọng lực để bong bóng sẽ rơi xuống sau khi đạt đỉnh
-		rb.gravityScale = 3.0f;  
+		Destroy(rb.gameObject, 3f);
 	}
 	//Chém sóng xung kích
 	IEnumerator Sequence_2()
@@ -151,6 +151,8 @@ public class BossCrocodile : MonoBehaviour
 		float randomScaleValue = Random.Range(2, 4);
 		rb.gameObject.transform.localScale = new Vector3(randomScaleValue, randomScaleValue, 0);
 		rb.velocity = new Vector2(Random.Range(5,11) * direction, Random.Range(3,8));
+		Destroy(rb.gameObject, 3f);
+
 	}
 
 	//Thổi bong bóng
@@ -171,6 +173,16 @@ public class BossCrocodile : MonoBehaviour
 
 		isCoroutineRunnning = false;
 
+	}
+
+	public void TakeDamage()
+	{
+		currentHealth--;
+		GetComponent<SimpleFlash>().Flash();
+		if(currentHealth < 0)
+		{
+			GameManager.instance.LoadScene("Scene_4");
+		}
 	}
 
 }

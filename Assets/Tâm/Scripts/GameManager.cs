@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
 		audioManager = GetComponentInChildren<AudioManager>();
 		questManager = GetComponentInChildren<QuestManager>();
 
+		previousSceneName = SceneManager.GetActiveScene().name;
+
 	}
 
 	public bool IsControllable()

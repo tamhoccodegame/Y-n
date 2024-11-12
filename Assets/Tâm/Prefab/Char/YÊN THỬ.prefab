@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2795256337988423040}
   - component: {fileID: 8380013918108139999}
   - component: {fileID: 1325587850288785761}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FeetBoxCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,6 +256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHearts: 4
   currentHearts: 0
+  hitEffect: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
+  vulnerableCooldown: 1.5
 --- !u!114 &1157765851835578894
 MonoBehaviour:
   m_ObjectHideFlags: 0

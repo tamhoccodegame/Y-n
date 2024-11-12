@@ -12,6 +12,7 @@ public class TowerOfHanoi : MonoBehaviour
 	private Transform movingDisk; // Đĩa đang di chuyển
 	private int fromPegIndex; // Cột từ
 	private int toPegIndex; // Cột đến
+	private bool isChangePointer = false;
 
 	public Button skip;
 
@@ -19,7 +20,7 @@ public class TowerOfHanoi : MonoBehaviour
 
 	private void Start()
 	{
-		GameManager.instance.HideUI();
+		//GameManager.instance.HideUI();
 		skip.onClick.AddListener(() => GameManager.instance.LoadPreviousScene());
 		towers = new Stack<Transform>[pegs.Length];
 		for (int i = 0; i < pegs.Length; i++)
@@ -44,14 +45,15 @@ public class TowerOfHanoi : MonoBehaviour
 	{
 		SelectDisk();
 		ChooseDisk();
-		if(isMoving)
+		if(isMoving && !isChangePointer)
 		{
-			pulledPosition.GetComponent<Image>().color = Color.black;
+			isChangePointer = true;
+			pulledPosition.position -= new Vector3(0, 0.5f);
 		}
-		else if(!isMoving)
+		else if(!isMoving && isChangePointer)
 		{
-
-			pulledPosition.GetComponent<Image>().color = Color.white;
+			isChangePointer = false;
+			pulledPosition.position += new Vector3(0, 0.5f);
 		}
 	}
 

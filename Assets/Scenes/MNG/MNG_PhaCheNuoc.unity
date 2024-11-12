@@ -538,7 +538,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -556,8 +556,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1044294991
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7efc36e8bf5b7bc47acbad0cc8f9058b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -970,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 978581321735019880, guid: 30d63857992664141ad85049c4a65e05, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5840393264691439592, guid: 30d63857992664141ad85049c4a65e05, type: 3}
       propertyPath: m_Pivot.x
@@ -1079,6 +1079,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 1008211891092897121, guid: b928b5cab47ff46439c98c154fd1a666, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1640982115
+      objectReference: {fileID: 0}
     - target: {fileID: 3004779921935184968, guid: b928b5cab47ff46439c98c154fd1a666, type: 3}
       propertyPath: m_text
       value: "Ch\u1ECBu thua"

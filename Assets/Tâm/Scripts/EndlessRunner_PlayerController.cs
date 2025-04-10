@@ -32,13 +32,13 @@ public class EndlessRunner_PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && canJump) 
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             canJump = false;    
         }
 
-        if(rb.velocity.y <= stopVelocity)
+        if(rb.linearVelocity.y <= stopVelocity)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * fallingForce * Time.deltaTime;
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * fallingForce * Time.deltaTime;
         }   
     }
 }

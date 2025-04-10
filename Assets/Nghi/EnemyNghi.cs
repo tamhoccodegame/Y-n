@@ -81,10 +81,10 @@ public class EnemyNghi : MonoBehaviour
 
     void HandleFlip()
     {
-        if (rb.velocity.x != 0 && !isAttacking)
+        if (rb.linearVelocity.x != 0 && !isAttacking)
         {
 			Vector3 currentLocalScale = transform.localScale;
-			currentLocalScale.x = Mathf.Abs(currentLocalScale.x) * Mathf.Sign(rb.velocity.x);
+			currentLocalScale.x = Mathf.Abs(currentLocalScale.x) * Mathf.Sign(rb.linearVelocity.x);
 			transform.localScale = currentLocalScale;
 		}
 	}
@@ -159,7 +159,7 @@ public class EnemyNghi : MonoBehaviour
 
     IEnumerator PerformAttack()
     {
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         isAttacking = true;
         // Giả lập đòn tấn công (thời gian delay giữa các đòn tấn công)
         animator.SetTrigger("isAttack");
@@ -189,7 +189,7 @@ public class EnemyNghi : MonoBehaviour
     void MoveTo(Vector3 target, float speed)
     {
         Vector3 direction = (target - transform.position).normalized;
-        rb.velocity = new Vector2(speed * direction.x, rb.velocity.y);
+        rb.linearVelocity = new Vector2(speed * direction.x, rb.linearVelocity.y);
     }
 
 	private void OnDrawGizmos()

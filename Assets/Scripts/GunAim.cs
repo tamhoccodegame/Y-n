@@ -53,7 +53,7 @@ public class GunAim2D : MonoBehaviour
 		if(Input.GetMouseButtonDown(0))
 		{
 			Rigidbody2D bulletRb = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-			bulletRb.velocity = direction * 15;
+			bulletRb.linearVelocity = direction * 15;
 		}
 	}
 }

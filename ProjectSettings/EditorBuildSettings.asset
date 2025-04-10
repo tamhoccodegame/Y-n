@@ -39,3 +39,4 @@ EditorBuildSettings:
     path: Assets/Scenes/MNG/MNG_DuaGhe.unity
     guid: a1cc1e77418e29b4db82c14f3131f98d
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

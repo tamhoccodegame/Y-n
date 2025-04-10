@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         HandleInput();
         UpdateAnimation();
 
-        if (rb.velocity.y < stopJumpVel)
+        if (rb.linearVelocity.y < stopJumpVel)
         {
             Fall();
         }
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     void Move(float moveInput)
     {
-		rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+		rb.linearVelocity = new Vector2(moveInput * speed, rb.linearVelocity.y);
         ChangeState(PlayerState.Moving);
 
         Vector3 currentScale = transform.localScale;
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             ChangeState(PlayerState.Jumping);
         }
         
@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
     public void Fall()
     {
-        rb.velocity += Vector2.up * Physics2D.gravity.y * fallingForce * Time.deltaTime;
+        rb.linearVelocity += Vector2.up * Physics2D.gravity.y * fallingForce * Time.deltaTime;
     }
 
     void Attack()

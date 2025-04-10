@@ -29,7 +29,7 @@ public class AI : MonoBehaviour
 
 		float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-		rb.velocity = new Vector2(0, rb.velocity.y);
+		rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 		//// Check if player is in range
 		//if (distanceToPlayer < detectionRange)
 		//{
@@ -51,7 +51,7 @@ public class AI : MonoBehaviour
 		Vector2 direction = (player.position - transform.position).normalized;
 
 		// Move towards player
-		rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
+		rb.linearVelocity = new Vector2(direction.x * moveSpeed, rb.linearVelocity.y);
 
 		// Check if the player is above or below
 		if (isGrounded && IsObstacleInFront())
@@ -73,21 +73,21 @@ public class AI : MonoBehaviour
 	bool IsObstacleInFront()
 	{
 		// Kiểm tra chướng ngại vật phía trước mặt
-		RaycastHit2D obstacleCheck = Physics2D.Raycast(transform.position, Vector2.right * Mathf.Sign(rb.velocity.x), obstacleCheckDistance, groundLayer);
+		RaycastHit2D obstacleCheck = Physics2D.Raycast(transform.position, Vector2.right * Mathf.Sign(rb.linearVelocity.x), obstacleCheckDistance, groundLayer);
 		return obstacleCheck.collider != null;
 	}
 
 	bool IsGroundInFront()
 	{
 		// Kiểm tra có mặt đất phía trước không (để tránh rơi vào "vách")
-		Vector2 groundCheckPos = new Vector2(transform.position.x + Mathf.Sign(rb.velocity.x) * obstacleCheckDistance, transform.position.y);
+		Vector2 groundCheckPos = new Vector2(transform.position.x + Mathf.Sign(rb.linearVelocity.x) * obstacleCheckDistance, transform.position.y);
 		RaycastHit2D groundCheck = Physics2D.Raycast(groundCheckPos, Vector2.down, groundCheckDistance, groundLayer);
 		return groundCheck.collider != null;
 	}
 
 	void Jump()
 	{
-		rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+		rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 	}
 
 	public IEnumerator Charmed(Transform charmSource, float duration)
@@ -99,7 +99,7 @@ public class AI : MonoBehaviour
 		while(charmTimer <= duration)
 		{
 			Vector2 direction = (charmSource.position - transform.position).normalized;
-			rb.velocity = new Vector2(moveSpeed * direction.x, rb.velocity.y);
+			rb.linearVelocity = new Vector2(moveSpeed * direction.x, rb.linearVelocity.y);
 			charmTimer += Time.deltaTime;
 			yield return null;
 		}

@@ -5,7 +5,7 @@ public class JumpingState : IPlayerState
 	public void EnterState(PlayerStateManager player)
 	{
 		player.isGrounded = false;
-		player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
+		player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, player.jumpForce);
 		player.jumpTimeCounter = player.maxJumpTime;
 		GameManager.instance.PlayAudio("Jump");
 		player.animator.Play("Jump");
@@ -18,7 +18,7 @@ public class JumpingState : IPlayerState
 		// Nếu vẫn giữ phím nhảy và còn thời gian nhảy
 		if (Input.GetKey(KeyCode.Space) && player.jumpTimeCounter > 0)
 		{
-			player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
+			player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, player.jumpForce);
 			player.jumpTimeCounter -= Time.deltaTime;
 		}
 

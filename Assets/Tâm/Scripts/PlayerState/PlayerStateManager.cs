@@ -64,7 +64,7 @@ public class PlayerStateManager : MonoBehaviour
 	public void HandleMovement()
 	{
 		// Cập nhật vận tốc dựa trên MoveInput và tốc độ
-		rb.velocity = new Vector2(MoveInput * speed, rb.velocity.y);
+		rb.linearVelocity = new Vector2(MoveInput * speed, rb.linearVelocity.y);
 		Vector3 currentLocalScale = transform.localScale;
 
 		if(MoveInput > 0)	currentLocalScale.x = Mathf.Abs(currentLocalScale.x);

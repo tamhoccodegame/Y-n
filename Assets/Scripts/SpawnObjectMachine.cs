@@ -52,7 +52,7 @@ public class SpawnObjectMachine : MonoBehaviour
 
         Rigidbody2D obstacle = Instantiate(obstaclePrefab[obstacleIndex], spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
         obstacle.gameObject.transform.rotation = obstaclePrefab[obstacleIndex].transform.rotation;
-        obstacle.velocity = new Vector2(-30, 0);
+        obstacle.linearVelocity = new Vector2(-30, 0);
 
         Destroy(obstacle.gameObject, 3f);
     }

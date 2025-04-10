@@ -40,7 +40,7 @@ public class BossCST : MonoBehaviour
 		while (true)
 		{
 			float direction = Random.Range(-1f, 1f);
-			rb.velocity = new Vector2(direction * moveSpeed, rb.velocity.y);
+			rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 			yield return new WaitForSeconds(1f); // Thay đổi hướng mỗi giây
 		}
 	}
@@ -70,7 +70,7 @@ public class BossCST : MonoBehaviour
 		yield return new WaitForSeconds(0.5f); // Chờ một chút trước khi dậm chân
 
 		// Dậm chân
-		rb.velocity = new Vector2(rb.velocity.x, -moveSpeed);
+		rb.linearVelocity = new Vector2(rb.linearVelocity.x, -moveSpeed);
 		yield return new WaitForSeconds(0.5f); // Thời gian dậm chân
 
 		isAttacking = false;

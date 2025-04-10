@@ -84,7 +84,7 @@ public class BossCrocodile : MonoBehaviour
 	void Move()
 	{
 		animator.Play("CST_Walk");
-		rb.velocity = new Vector2(speed, 0);
+		rb.linearVelocity = new Vector2(speed, 0);
 		LookAtTarget(speed);
 	}
 
@@ -115,7 +115,7 @@ public class BossCrocodile : MonoBehaviour
 		float initialSpeed = 10f;  // Tốc độ ban đầu có thể thay đổi tùy nhu cầu
 		Vector2 initialVelocity = new Vector2(direction.x * initialSpeed, 0); // Cộng thêm độ cong hướng lên
 
-		rb.velocity = initialVelocity;
+		rb.linearVelocity = initialVelocity;
 
 		Destroy(rb.gameObject, 3f);
 	}
@@ -128,7 +128,7 @@ public class BossCrocodile : MonoBehaviour
 			yield return null;
 		}
 
-		rb.velocity = Vector2.zero;
+		rb.linearVelocity = Vector2.zero;
 
 		for(int i = 0; i < 4; i++)
 		{
@@ -150,7 +150,7 @@ public class BossCrocodile : MonoBehaviour
 		Debug.Log(direction);
 		float randomScaleValue = Random.Range(2, 4);
 		rb.gameObject.transform.localScale = new Vector3(randomScaleValue, randomScaleValue, 0);
-		rb.velocity = new Vector2(Random.Range(5,11) * direction, Random.Range(3,8));
+		rb.linearVelocity = new Vector2(Random.Range(5,11) * direction, Random.Range(3,8));
 		Destroy(rb.gameObject, 3f);
 
 	}
@@ -163,7 +163,7 @@ public class BossCrocodile : MonoBehaviour
 			Move();
 			yield return null;
 		}
-		rb.velocity = Vector2.zero;
+		rb.linearVelocity = Vector2.zero;
 		LookAtTarget(player);
 
 		animator.Play("CST_ThoiBong");

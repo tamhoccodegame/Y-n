@@ -15,6 +15,6 @@ public class CloudSpawner : MonoBehaviour
     void SpawnCloud()
     {
         Rigidbody2D rb = Instantiate(cloudPrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-        rb.velocity = Vector2.left * speed;
+        rb.linearVelocity = Vector2.left * speed;
     }
 }

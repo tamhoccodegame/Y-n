@@ -22,6 +22,6 @@ public class Yen_DuaGheController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        rb.velocity = new Vector2(horizontalInput * horizontalMoveSpeed, verticalInput * verticalMoveSpeed);
+        rb.linearVelocity = new Vector2(horizontalInput * horizontalMoveSpeed, verticalInput * verticalMoveSpeed);
     }
 }

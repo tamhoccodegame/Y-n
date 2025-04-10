@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
     protected void MoveToTarget(Transform target)
     {
 		float direction = GetDirection(target);
-		rb.velocity = new Vector2(direction * moveSpeed, rb.velocity.y);
+		rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 	}
 
     void Patrol()
@@ -127,10 +127,10 @@ public class Enemy : MonoBehaviour
     {
         float distanceToPlayer = Mathf.Abs(transform.position.x - player.position.x);
 
-        if(rb.velocity.x != 0 )
+        if(rb.linearVelocity.x != 0 )
         {
 			Vector3 currentLocalScale = transform.localScale;
-			currentLocalScale.x = Mathf.Sign(rb.velocity.x) * Mathf.Abs(currentLocalScale.x);
+			currentLocalScale.x = Mathf.Sign(rb.linearVelocity.x) * Mathf.Abs(currentLocalScale.x);
 			transform.localScale = currentLocalScale;
 		}
         
